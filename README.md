@@ -34,7 +34,7 @@ Below is a list of the required tasks and their corresponding features.
 - [ ] Task 18 - Handle variables replacement, ``$?`` and ``$$``
 - [ ] Task 19 - Handle comments (``#``)
 - [ ] Task 20 - Handle the ``help`` built-in
-- [ ] Task 21 - Implement the built-in history, without arguments
+- [ ] Task 21 - Implement the history (without arguments)
 - [ ] Task 22 - The shell can take a file as input (e.g. ``simple_shell [filename])``
 
 
