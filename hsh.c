@@ -1,4 +1,4 @@
-#include "holberton.h"
+#include "hsh.h"
 
 /**
  * free_star
@@ -6,15 +6,98 @@
 
 void free_star(char **args)
 {
-	int i = 0;
+	int i = 1;
 
-	while (args[i])
+	while (args[i - 1])
 	{
 		free(args[i]);
 		i++;
 	}
 	free(args);
 }
+
+
+/**
+ * hsh_getline - gets the line
+ */
+
+char *hsh_getline(void)
+{
+	char *line = NULL;
+	ssize_t buf = 0;
+
+	getline(&line, &buf, stdin);
+
+	return (line);
+}
+
+/**
+ * hsh_tokens - splits the line
+ */
+
+char **hsh_tokens(char *line)
+{
+	int i = 0, j = 0, num_toks = 0;
+	char **toks = NULL;
+	char *tmp;
+	char *delim = TOK_DELIM;
+
+	while (line[i])
+	{
+		if (line[i] == ' ')
+		{
+			i++;
+		}
+		else
+		{
+			while (line[i] && line[i] != ' ')
+				i++;
+			num_toks++;
+		}
+	}
+
+	toks = malloc(sizeof(char *) * (num_toks + 1));
+
+	tmp = strtok(line, delim);
+	while (tmp != NULL)
+	{
+		toks[j] = tmp;
+		j++;
+		tmp = strtok(NULL, delim);
+	}
+	toks[j] = NULL;
+
+	return (toks);
+}
+
+/**
+ * hsh_exec
+ */
+
+int hsh_exec(char **toks)
+{
+	pid_t child_pid;
+	int status;
+
+
+	child_pid = fork();
+	if (child_pid == -1)
+	{
+		perror("fork");
+		return (1);
+	}
+	if (child_pid == 0)
+	{
+		status = execve(toks[0], toks, NULL);
+		perror("execve");
+	}
+	else
+	{
+		wait(&status);
+	}
+	return (1);
+}
+
 
 /**
  * main - super simple shell
@@ -24,68 +107,19 @@ void free_star(char **args)
 
 int main(void)
 {
-	char *line;
-	size_t bufsize = 0;
-	char *arr = NULL;
-	char **args = NULL;
-	int toks = 0, i = 0, j = 0;
-	pid_t child_pid;
-	int status = 0;
+	char *line = NULL;
+	char **toks = NULL;
+	int status = 1;
 
-	while (1)
+	while (status)
 	{	
-		status = 0;
-		i = 0;
-		j = 0;
-		toks = 0;
-
 		printf("$ ");
-		getline(&line, &bufsize, stdin);
-
-		while (line[i])
-		{
-			if (line[i] == ' ')
-			{
-				i++;
-			}
-			else
-			{
-				while (line[i] && line[i] != ' ')
-					i++;
-				toks++;
-			}
-		}
-
-		args = malloc(sizeof(char *) * (toks + 1));
-
-		*arr = strtok(line, " \n");
-		while (arr != NULL)
-		{
-			args[j] = arr;
-			j++;
-			*arr = strtok(NULL, " \n");
-		}
-
-		args[j] = NULL;
-
-
-		child_pid = fork();
-		if (child_pid == -1)
-		{
-			perror("fork");
-			return (1);
-		}
-		if (child_pid == 0)
-		{
-			status = execve(args[0], args, NULL);
-			perror("execve");
-		}
-		else
-		{
-			wait(&status);
-		}
+		line = hsh_getline();
+		toks = hsh_tokens(line);
+		status = hsh_exec(toks);
+		free(line);
+		free_star(toks);
 	}
 
 	return (0);
 }
-
