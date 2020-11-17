@@ -8,19 +8,18 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <errno.h>
 
-/* CONSTANTS */
+/* MACROS */
 #define BUFSIZE 1024
 #define TOK_DELIM " \n\t\r\a"
 #define PROMPT "ATshell$ "
-
-/* UTILS */
 
 /* BUILTINS */
 
 int hsh_cd(char **args);
 int hsh_help(char **args);
-int hsh_exit(char **args);
+void hsh_exit(char **args);
 int hsh_check_builtin(char **args);
 
 /* STRING UTILS */

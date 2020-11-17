@@ -1,46 +1,63 @@
 #include "hsh.h"
 
 /**
- * cd builtin
+ * hsh_cd - changes directory
+ *
+ * @args: array of args
+ *
+ * Return: status code
  */
 
 int hsh_cd(char **args)
 {
-	if (args[1] == NULL)
+	if (!args[1])
 	{
-		printf("expect arg after cd");	
-		return (1);
+		chdir("~");
+		return (0);
 	}
 	else
 	{
-		if (chdir(args[1] != 0)
-			perror("wrong directory or smthg like that");
+		if (chdir(args[1]) == -1)
+			perror("cd");
+		return (0);
 	}
-	return (1);
+	return (-1);
 }
 
 /**
- * exit builtin
+ * hsh_exit - Exits the shell
+ *
+ * @args: arguments to command
  */
 
-int hsh_exit(char **args)
+void hsh_exit(char **args)
 {
-	return (0);
+	(void)args;
+
+/*	if (args[1] && atoi(args[1]))
+		exit(atoi(args[1])); */
+	exit(0);
 }
 
 /**
- * help builtin
+ * hsh_help - user help
+ *
+ * @args: arguments to command
+ *
+ * Return: status code
  */
 
 int hsh_help(char **args)
 {
 	int i;
+	(void)args;
+
 	printf("Usage : program name + argument + enter\n");
 	printf("Here are builtins :\n");
 	i = 0;
 	while (i < 2)
 	{
-		printf("%s\n", builtin_str[i]);
+		/*printf("%s\n", builtin_str[i]);*/
 		i++;
 	}
 	return (1);
@@ -49,7 +66,7 @@ int hsh_help(char **args)
 /**
  * check/exec_builtins
  */
-
+/*
 int hsh_check_builtin(char **args)
 {
 	char *builtin_str[] = {"cd", "help", "exit"};
@@ -70,4 +87,4 @@ int hsh_check_builtin(char **args)
 		i++;
 	}
 	return (hsh_exec(args));
-}
+} */

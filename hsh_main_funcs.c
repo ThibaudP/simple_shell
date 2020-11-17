@@ -71,7 +71,13 @@ int hsh_exec(char **toks)
 {
 	pid_t child_pid;
 	int status;
+	
 
+/* CHECK FOR ALIASES THEN BUILTINS THEN IN PATH THEN FULL PATH HERE */
+
+/* 	if (isbuiltin(toks[0])
+	{
+*/		
 
 	child_pid = fork();
 	if (child_pid == -1)
