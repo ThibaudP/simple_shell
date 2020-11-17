@@ -15,4 +15,13 @@
 
 /* UTILS */
 
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+
+/* MAIN FUNCTIONS */
+
+char *hsh_getline(void);
+char **hsh_tokens(char *line);
+int hsh_exec(char **toks);
+
+
 #endif

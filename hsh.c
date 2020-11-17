@@ -1,7 +1,8 @@
 #include "hsh.h"
 
 /**
- * free_star
+ * free_star - frees an array of strings
+ * @args: Array of malloced strings to free
  */
 
 void free_star(char **args)
@@ -19,6 +20,8 @@ void free_star(char **args)
 
 /**
  * hsh_getline - gets the line
+ *
+ * Return: A string containing the command to execute
  */
 
 char *hsh_getline(void)
@@ -33,6 +36,10 @@ char *hsh_getline(void)
 
 /**
  * hsh_tokens - splits the line
+ *
+ * @line: the command line typed by the user
+ *
+ * Return: an array of strings containing all tokens
  */
 
 char **hsh_tokens(char *line)
@@ -71,7 +78,11 @@ char **hsh_tokens(char *line)
 }
 
 /**
- * hsh_exec
+ * hsh_exec - executes a command from its tokens
+ *
+ * @toks: the array of argv tokens
+ *
+ * Return: a status code
  */
 
 int hsh_exec(char **toks)
@@ -112,7 +123,7 @@ int main(void)
 	int status = 1;
 
 	while (status)
-	{	
+	{
 		printf("$ ");
 		line = hsh_getline();
 		toks = hsh_tokens(line);
