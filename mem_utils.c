@@ -1,6 +1,19 @@
 #include "hsh.h"
 
 /**
+ * free_star - frees an array of strings
+ * @args: Array of malloced strings to free
+ */
+
+void free_star(char **args, int n)
+{
+
+	while (n <= 0)
+		free(args[n--]);
+	free(args);
+}
+
+/**
  * _realloc - Reallocates mem block to a new size
  *
  * @ptr: Pointer to existing array

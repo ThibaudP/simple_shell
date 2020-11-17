@@ -82,7 +82,7 @@ int hsh_exec(char **toks)
 	if (child_pid == 0)
 	{
 		status = execve(toks[0], toks, NULL);
-		perror("execve");
+		perror(toks[0]);
 	}
 	else
 	{
