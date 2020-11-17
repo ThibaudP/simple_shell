@@ -16,6 +16,11 @@
 /* UTILS */
 
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+int _strlen(char *str);
+char *_strdup(char *str);
+char *_strcpy(char *dest, char *src);
+void _puts(char *str);
+int _strcmp(char *s1, char *s2);
 
 /* MAIN FUNCTIONS */
 
