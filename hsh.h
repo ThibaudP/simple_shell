@@ -16,6 +16,13 @@
 
 /* UTILS */
 
+/* BUILTINS */
+
+int hsh_cd(char **args);
+int hsh_help(char **args);
+int hsh_exit(char **args);
+int hsh_check_builtin(char **args);
+
 /* STRING UTILS */
 
 int _strlen(char *str);
