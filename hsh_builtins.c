@@ -50,6 +50,7 @@ void hsh_exit(char **args)
 int hsh_help(char **args)
 {
 	int i;
+	char *builtin_str[] = {"cd", "help", "exit"};
 	(void)args;
 
 	printf("Usage : program name + argument + enter\n");
@@ -57,7 +58,7 @@ int hsh_help(char **args)
 	i = 0;
 	while (i < 2)
 	{
-		/*printf("%s\n", builtin_str[i]);*/
+		printf("%s\n", builtin_str[i]);
 		i++;
 	}
 	return (1);
@@ -69,7 +70,6 @@ int hsh_help(char **args)
 /*
 int hsh_check_builtin(char **args)
 {
-	char *builtin_str[] = {"cd", "help", "exit"};
 	int *builtin_func[] = {&hsh_cd, &hsh_help, &hsh_exit};
 	int i;
 
