@@ -1,4 +1,4 @@
-# simple_shell 
+# simple_shell
 
 This projects aims to create a simple shell, from scratch, with as much features as possible.
 
@@ -28,7 +28,7 @@ Below is a list of the required tasks and their corresponding features.
 - [ ] Task 12 - Handle ``Ctrl+C`` (shell shouldn't quit after ^C input)
 - [ ] Task 13 - Implement the ``setenv`` and ``unsetenv`` built-ins
 - [ ] Task 14 - Implement the ``cd`` built-in
-- [ ] Task 15 - Handle the commands separator ``;`` 
+- [ ] Task 15 - Handle the commands separator ``;``
 - [ ] Task 16 - Handle the ``&&`` and ``||`` shell logical separators
 - [ ] Task 17 - Implement the ``alias`` built-in
 - [ ] Task 18 - Handle variables replacement, ``$?`` and ``$$``

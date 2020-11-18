@@ -71,13 +71,10 @@ int hsh_exec(char **toks)
 {
 	pid_t child_pid;
 	int status;
-	
 
 /* CHECK FOR ALIASES THEN BUILTINS THEN IN PATH THEN FULL PATH HERE */
 
-/* 	if (toks[0])
-	{
-*/		
+/*if (toks[0])*/
 
 	/* IF NOT ALIAS NOR BUILTIN, CHECK FOR COMMAND IN PATH */
 	hsh_checkPATH(toks);
@@ -130,7 +127,7 @@ char **hsh_checkPATH(char **toks)
 		}
 	}
 	paths = malloc(sizeof(char *) * (num_toks + 1));
-	
+
 	i = 0;
 	while (i < (num_toks - 1))
 	{

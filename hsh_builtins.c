@@ -36,8 +36,7 @@ int hsh_exit(char **args)
 {
 	(void)args;
 
-/*	if (args[1] && atoi(args[1]))
-		exit(atoi(args[1])); */
+/*if (args[1] && atoi(args[1])) exit(atoi(args[1]));*/
 	exit(0);
 	return (1);
 }
@@ -71,7 +70,7 @@ int hsh_help(char **args)
  * hsh_check_builtin - checks for builtins
  *
  * @args: arguments passed
- * 
+ *
  * Return: 1 if success, -1 if failure
  */
 

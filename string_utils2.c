@@ -65,7 +65,7 @@ char *_strtok(char *str, char *delim)
 	char *tok = NULL;
 	static char *ptrtok;
 	int i = 0, j = 0;
-	
+
 	if (str)
 		tok = str;
 	else if (ptrtok)
@@ -81,7 +81,7 @@ char *_strtok(char *str, char *delim)
 		j = 0;
 		while (str[j] && str[j] != delim[i])
 			j++;
-		
+
 		if (str[j] == delim[i] || str[j] == '\0')
 		{
 			if (str[j] == delim[i])
