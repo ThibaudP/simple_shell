@@ -77,7 +77,7 @@ int hsh_help(char **args)
 
 int hsh_check_builtin(char **args)
 {
-	int *builtin_func[] = {&hsh_cd, &hsh_help, &hsh_exit};
+	int (*builtin_func[]) (char **) = {&hsh_cd, &hsh_help, &hsh_exit};
 	char *builtin_str[] = {"cd", "help", "exit"};
 	int i;
 
@@ -90,7 +90,7 @@ int hsh_check_builtin(char **args)
 	{
 		if (strcmp(args[0], builtin_str[i]) == 0)
 		{
-			builtin_func[i];
+			(*builtin_func[i])(args);
 			return (1);
 		}
 		i++;

@@ -79,6 +79,10 @@ int hsh_exec(char **toks)
 	{
 */		
 
+	/* IF NOT ALIAS NOR BUILTIN, CHECK FOR COMMAND IN PATH */
+
+	
+
 	child_pid = fork();
 	if (child_pid == -1)
 	{
@@ -95,4 +99,75 @@ int hsh_exec(char **toks)
 		wait(&status);
 	}
 	return (1);
+}
+
+/**
+ * hsh_checkPATH - checks command against all PATH folders
+ *
+ * @toks: array of arguments
+ *
+ * Return: the array of arguments (with full path of command if it exists)
+ */
+
+char **hsh_checkPATH(char **toks)
+{
+	char *path;
+	char **paths;
+	int i = 0, num_toks = 0;
+
+	path = getenv("PATH");
+
+	while (path[i])
+	{
+		if (path[i] == ':')
+			i++;
+		else
+		{
+			while (path[i] && path[i] != ':')
+				i++;
+			num_toks++;
+		}
+	}
+
+	paths = malloc(sizeof(char *) * (num_toks + 1));
+	paths[0] = strtok(path, ":");
+
+	i = 0;
+	while (paths[i] != NULL)
+	{
+		i++;
+		paths[i] = strtok(NULL, ":");
+	}
+
+	
+	return (pathexists(toks, paths));
+}
+
+/**
+ * pathexists - checks if provided command exists in the PATH
+ *
+ * @toks: array of arguments
+ * @paths: array of paths
+ *
+ * Return: the array of arguments
+ */
+
+char **pathexists(char **toks, char **paths)
+{
+	int i = 0;
+	char *file = toks[0], *tmp1, *tmp2;
+	struct stat st;
+
+	while (paths[i])
+	{
+		tmp1 = _strcat(toks[0], "/");
+		tmp2 = _strcat(tmp1, file);
+
+		if (stat(tmp2, &st) == 0)
+		{
+			toks[0] = strdup(tmp2);
+		}
+	}
+	return (toks);
+
 }
