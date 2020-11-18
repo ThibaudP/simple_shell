@@ -48,6 +48,7 @@ void _puts(char *str);
 int _strcmp(char *s1, char *s2);
 int _putchar(char c);
 char *_strcat(char *s1, char *s2);
+char *_strtok(char *str, char *delim);
 
 /* MEM UTILS */
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);

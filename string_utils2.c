@@ -51,3 +51,53 @@ char *_strcat(char *s1, char *s2)
 	return (str);
 }
 
+/**
+ * _strtok - respin of strtok()
+ *
+ * @str - string to split
+ * @delim - string of delimiters
+ *
+ * Return: pointer to next token
+ */
+
+char *_strtok(char *str, char *delim)
+{
+	char *tok = NULL;
+	static char *ptrtok;
+	int i = 0, j = 0;
+	
+	if (str)
+		tok = str;
+	else if (ptrtok)
+	{
+		str = ptrtok;
+		tok = ptrtok;
+	}
+	else
+		perror("_strtok");
+
+	while (delim[i])
+	{
+		j = 0;
+		while (str[j] && str[j] != delim[i])
+			j++;
+		
+		if (str[j] == delim[i] || str[j] == '\0')
+		{
+			if (str[j] == delim[i])
+			{
+				str[j] = '\0';
+				ptrtok = (char *)&str[++j];
+			}
+			else
+			{
+				ptrtok = NULL;
+				tok = NULL;
+			}
+			return (tok);
+		}
+		i++;
+	}
+
+	return (tok);
+}

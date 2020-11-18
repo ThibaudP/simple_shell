@@ -110,11 +110,13 @@ int hsh_exec(char **toks)
 
 char **hsh_checkPATH(char **toks)
 {
-	char *path;
+	char path[1024];
+	char *origpath;
 	char **paths;
 	int i = 0, num_toks = 0;
 
-	path = getenv("PATH");
+	origpath = getenv("PATH");
+	_strcpy(path, origpath);
 
 	while (path[i])
 	{
@@ -123,21 +125,20 @@ char **hsh_checkPATH(char **toks)
 		else
 		{
 			while (path[i] && path[i] != ':')
-			{
 				i++;
-			}
 			num_toks++;
 		}
 	}
-
 	paths = malloc(sizeof(char *) * (num_toks + 1));
-	paths[0] = strtok(path, ":");
-
+	
 	i = 0;
-	while (paths[i] != NULL)
+	while (i < (num_toks - 1))
 	{
+		if (i == 0)
+			paths[i] = _strtok(path, ":");
+		else
+			paths[i] = _strtok(NULL, ":");
 		i++;
-		paths[i] = strtok(NULL, ":");
 	}
 	return (pathexists(toks, paths));
 }
@@ -154,20 +155,22 @@ char **hsh_checkPATH(char **toks)
 char **pathexists(char **toks, char **paths)
 {
 	int i = 0;
-	char *tmp1 = NULL, *tmp2 = NULL;
+	char *tmp = NULL;
 	struct stat st;
 
 	while (paths[i])
 	{
-		tmp1 = _strcat(paths[i], "/");
-		tmp2 = _strcat(tmp1, toks[0]);
+		tmp = _strdup(paths[i]);
+		tmp = _strcat(tmp, "/");
+		tmp = _strcat(tmp, toks[0]);
 
-		if (stat(tmp2, &st) == 0)
+		if (stat(tmp, &st) == 0)
 		{
-			toks[0] = tmp2;
+			toks[0] = strdup(tmp);
 		}
 		i++;
 	}
+	free(tmp);
 	free(paths);
 
 	return (toks);
