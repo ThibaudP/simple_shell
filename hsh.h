@@ -15,11 +15,27 @@
 #define TOK_DELIM " \n\t\r\a"
 #define PROMPT "ATshell$ "
 
+/* STRUCTS */
+
+/**
+ * struct builtins - contains builtin commands & their associated function
+ *
+ * @cmd: the command
+ * @func: the corresponding function
+ */
+
+typedef struct builtins
+{
+	char *cmd;
+	int *(*func)(char**);
+} builtins_t;
+
+
 /* BUILTINS */
 
 int hsh_cd(char **args);
 int hsh_help(char **args);
-void hsh_exit(char **args);
+int hsh_exit(char **args);
 int hsh_check_builtin(char **args);
 
 /* STRING UTILS */

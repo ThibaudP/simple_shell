@@ -75,7 +75,7 @@ int hsh_exec(char **toks)
 
 /* CHECK FOR ALIASES THEN BUILTINS THEN IN PATH THEN FULL PATH HERE */
 
-/* 	if (isbuiltin(toks[0])
+/* 	if (toks[0])
 	{
 */		
 
