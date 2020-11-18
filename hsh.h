@@ -61,6 +61,7 @@ char *_getenv(const char *name);
 char *hsh_getline(void);
 char **hsh_tokens(char *line);
 int hsh_exec(char **toks);
+char **hsh_checkPATH(char **toks);
 char **pathexists(char **toks, char **paths);
 
 #endif

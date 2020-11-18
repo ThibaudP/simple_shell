@@ -80,7 +80,7 @@ int hsh_exec(char **toks)
 */		
 
 	/* IF NOT ALIAS NOR BUILTIN, CHECK FOR COMMAND IN PATH */
-
+	hsh_checkPATH(toks);
 	
 
 	child_pid = fork();
@@ -98,6 +98,7 @@ int hsh_exec(char **toks)
 	{
 		wait(&status);
 	}
+
 	return (1);
 }
 
@@ -111,8 +112,8 @@ int hsh_exec(char **toks)
 
 char **hsh_checkPATH(char **toks)
 {
-	char *path;
-	char **paths;
+	char *path = NULL;
+	char **paths = NULL;
 	int i = 0, num_toks = 0;
 
 	path = getenv("PATH");
@@ -155,19 +156,22 @@ char **hsh_checkPATH(char **toks)
 char **pathexists(char **toks, char **paths)
 {
 	int i = 0;
-	char *file = toks[0], *tmp1, *tmp2;
+	char *tmp1 = NULL, *tmp2 = NULL;
 	struct stat st;
 
 	while (paths[i])
 	{
-		tmp1 = _strcat(toks[0], "/");
-		tmp2 = _strcat(tmp1, file);
+		tmp1 = _strcat(paths[i], "/");
+		tmp2 = _strcat(tmp1, toks[0]);
 
 		if (stat(tmp2, &st) == 0)
 		{
-			toks[0] = strdup(tmp2);
+			toks[0] = tmp2;
 		}
+		i++;
 	}
+	free(paths);
+
 	return (toks);
 
 }
