@@ -5,7 +5,7 @@
  *
  * @args: array of args
  *
- * Return: status code
+ * Return: 1 if success, -1 if failure
  */
 
 int hsh_cd(char **args)
@@ -13,13 +13,13 @@ int hsh_cd(char **args)
 	if (!args[1])
 	{
 		chdir("~");
-		return (0);
+		return (1);
 	}
 	else
 	{
 		if (chdir(args[1]) == -1)
 			perror("cd");
-		return (0);
+		return (1);
 	}
 	return (-1);
 }
@@ -28,6 +28,8 @@ int hsh_cd(char **args)
  * hsh_exit - Exits the shell
  *
  * @args: arguments to command
+ *
+ * Return: exit
  */
 
 int hsh_exit(char **args)
@@ -37,7 +39,7 @@ int hsh_exit(char **args)
 /*	if (args[1] && atoi(args[1]))
 		exit(atoi(args[1])); */
 	exit(0);
-	return (0);
+	return (1);
 }
 
 /**
@@ -45,7 +47,7 @@ int hsh_exit(char **args)
  *
  * @args: arguments to command
  *
- * Return: status code
+ * Return: 1 if success, -1 if failure
  */
 
 int hsh_help(char **args)
@@ -66,26 +68,32 @@ int hsh_help(char **args)
 }
 
 /**
- * check/exec_builtins
+ * hsh_check_builtin - checks for builtins
+ *
+ * @args: arguments passed
+ * 
+ * Return: 1 if success, -1 if failure
  */
-/*
+
 int hsh_check_builtin(char **args)
 {
 	int *builtin_func[] = {&hsh_cd, &hsh_help, &hsh_exit};
+	char *builtin_str[] = {"cd", "help", "exit"};
 	int i;
 
 	if (args[0] == NULL)
 	{
-		return (1);
+		return (-1);
 	}
 	i = 0;
 	while (i < 2)
 	{
 		if (strcmp(args[0], builtin_str[i]) == 0)
 		{
-			return (*builtin_func[i]);
+			builtin_func[i];
+			return (1);
 		}
 		i++;
 	}
-	return (hsh_exec(args));
-} */
+	return (-1);
+}
