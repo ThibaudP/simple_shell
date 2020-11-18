@@ -81,7 +81,6 @@ int hsh_exec(char **toks)
 
 	/* IF NOT ALIAS NOR BUILTIN, CHECK FOR COMMAND IN PATH */
 	hsh_checkPATH(toks);
-	
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -101,7 +100,6 @@ int hsh_exec(char **toks)
 
 	return (1);
 }
-
 /**
  * hsh_checkPATH - checks command against all PATH folders
  *
@@ -112,8 +110,8 @@ int hsh_exec(char **toks)
 
 char **hsh_checkPATH(char **toks)
 {
-	char *path = NULL;
-	char **paths = NULL;
+	char *path;
+	char **paths;
 	int i = 0, num_toks = 0;
 
 	path = getenv("PATH");
@@ -125,7 +123,9 @@ char **hsh_checkPATH(char **toks)
 		else
 		{
 			while (path[i] && path[i] != ':')
+			{
 				i++;
+			}
 			num_toks++;
 		}
 	}
@@ -139,8 +139,6 @@ char **hsh_checkPATH(char **toks)
 		i++;
 		paths[i] = strtok(NULL, ":");
 	}
-
-	
 	return (pathexists(toks, paths));
 }
 

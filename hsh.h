@@ -28,7 +28,7 @@
 typedef struct builtins
 {
 	char *cmd;
-	int *(*func)(char**);
+	int *(*func)(char **);
 } builtins_t;
 
 
