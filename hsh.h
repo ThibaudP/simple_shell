@@ -51,6 +51,9 @@ int _putchar(char c);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 void free_star(char **args, int n);
 
+/* ENV UTILS */
+char *_getenv(const char *name);
+
 /* MAIN FUNCTIONS */
 
 char *hsh_getline(void);
