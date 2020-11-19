@@ -1,12 +1,12 @@
 #include "hsh.h"
 
 /**
- * hsh_cd - changes directory
- *
- * @args: array of args
- *
- * Return: 1 if success, -1 if failure
- */
+ *  * hsh_cd - changes directory
+ *   *
+ *    * @args: array of args
+ *     *
+ *      * Return: 1 if success, -1 if failure
+ *       */
 
 int hsh_cd(char **args)
 {
@@ -25,12 +25,12 @@ int hsh_cd(char **args)
 }
 
 /**
- * hsh_exit - Exits the shell
- *
- * @args: arguments to command
- *
- * Return: exit
- */
+ *  * hsh_exit - Exits the shell
+ *   *
+ *    * @args: arguments to command
+ *     *
+ *      * Return: exit
+ *       */
 
 int hsh_exit(char **args)
 {
@@ -49,12 +49,12 @@ int hsh_exit(char **args)
 }
 
 /**
- * hsh_help - user help
- *
- * @args: arguments to command
- *
- * Return: 1 if success, -1 if failure
- */
+ *  * hsh_help - user help
+ *   *
+ *    * @args: arguments to command
+ *     *
+ *      * Return: 1 if success, -1 if failure
+ *       */
 
 int hsh_help(char **args)
 {
@@ -72,3 +72,7 @@ int hsh_help(char **args)
 	}
 	return (1);
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> ee5d37087e1c4073300e1357f3758083f531facc
