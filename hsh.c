@@ -1,39 +1,30 @@
 #include "hsh.h"
 
 /**
+ * main - simple shell
  *
- * ADD HERE
- * 3 FUNCTIONS
- * THAT HANDLE THE 3 MODES OF EXECUTION
- *
- * INTERACTIVE MODE
- * NON INTERACTIVE MODE
- * FILE MODE
- *
- * AND CALL THEM FROM MAIN()
- *
- *
- *
- *
- *
- *
- *
- */
-
-/**
- * main - super simple shell
+ * @ac: argument count
+ * @av: argument values
+ * @env: environment
  *
  * Return: always 0
  */
 
-int main(void)
+int main(int ac, char **av, char **env)
 {
 	char *line = NULL;
 	char **toks = NULL;
 	char *prompt = PROMPT;
 	int status = 1;
 	int i = 0;
+	(void)ac;
+	(void)av;
+	(void)env;
+	/* NON-INTERACTIVE MODE */
 
+
+
+	/* INTERACTIVE MODE */
 	while (status)
 	{
 		_puts(prompt);
