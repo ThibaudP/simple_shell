@@ -17,12 +17,12 @@ char *hsh_getline(void)
 }
 
 /**
- *  * hsh_tokens - splits the line
- *   *
- *    * @line: the command line typed by the user
- *     *
- *      * Return: an array of strings containing all tokens
- *       */
+ * hsh_tokens - splits the line
+ *
+ * @line: the command line typed by the user
+ *
+ * Return: an array of strings containing all tokens
+ */
 
 char **hsh_tokens(char *line)
 {
@@ -58,12 +58,12 @@ char **hsh_tokens(char *line)
 }
 
 /**
- *  * hsh_exec - executes a command from its tokens
- *   *
- *    * @toks: the array of argv tokens
- *     *
- *      * Return: a status code
- *       */
+ * hsh_exec - executes a command from its tokens
+ *
+ * @toks: the array of argv tokens
+ *
+ * Return: a status code
+ */
 
 int hsh_exec(char **toks)
 {
@@ -97,12 +97,12 @@ int hsh_exec(char **toks)
 	return (1);
 }
 /**
- *  * hsh_checkpath - checks command against all PATH folders
- *   *
- *    * @toks: array of arguments
- *     *
- *      * Return: the array of arguments (with full path of command if it exists)
- *       */
+ * hsh_checkpath - checks command against all PATH folders
+ *
+ * @toks: array of arguments
+ *
+ * Return: the array of arguments (with full path of command if it exists)
+ */
 
 char **hsh_checkpath(char **toks)
 {
@@ -149,12 +149,12 @@ char **hsh_checkpath(char **toks)
 }
 
 /**
- *  * hsh_check_builtins - checks for builtins
- *   *
- *    * @args: arguments passed
- *     *
- *      * Return: 1 if success, -1 if failure
- *       */
+ * hsh_check_builtins - checks for builtins
+ *
+ * @args: arguments passed
+ *
+ * Return: 1 if success, -1 if failure
+ */
 
 int hsh_check_builtins(char **args)
 {
@@ -167,12 +167,12 @@ int hsh_check_builtins(char **args)
 		return (hsh_help(args));
 	if (_strcmp(args[0], "exit") == 0)
 		return (hsh_exit(args));
-	/*	if (_strcmp(args[0], "env") == 0)
-	 *			return (hsh_env(args));
-	 *				if (_strcmp(args[0], "setenv") == 0)
-	 *						return (hsh_setenv(args));
-	 *							if (_strcmp(args[0], "unsetenv") == 0)
-	 *									return (hsh_unsetenv(args));
-	 *									*/
+	/* if (_strcmp(args[0], "env") == 0)
+	 * return (hsh_env(args));
+	 * if (_strcmp(args[0], "setenv") == 0)
+	 * return (hsh_setenv(args));
+	 * if (_strcmp(args[0], "unsetenv") == 0)
+	 * return (hsh_unsetenv(args));
+	 **/
 	return (0);
 }

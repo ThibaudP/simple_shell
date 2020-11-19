@@ -1,13 +1,13 @@
 #include "hsh.h"
 
 /**
- *  * _putchar - writes the character c to stdout
- *   *
- *    * @c: The character to print
- *     *
- *      * Return: On success 1.
- *       * On error, -1 is returned, and errno is set appropriately.
- *        */
+ * _putchar - writes the character c to stdout
+ *
+ * @c: The character to print
+ *
+ * Return: On success 1.
+ * On error, -1 is returned, and errno is set appropriately.
+ */
 
 int _putchar(char c)
 {
@@ -15,13 +15,13 @@ int _putchar(char c)
 }
 
 /**
- *  * _strcat - concatenates two strings
- *   *
- *    * @s1: the first string
- *     * @s2: the second string
- *      *
- *       * Return: a pointer to the new string, or NULL on failure
- *        */
+ * _strcat - concatenates two strings
+ *
+ * @s1: the first string
+ * @s2: the second string
+ *
+ * Return: a pointer to the new string, or NULL on failure
+ */
 
 char *_strcat(char *s1, char *s2)
 {
@@ -52,13 +52,13 @@ char *_strcat(char *s1, char *s2)
 }
 
 /**
- *  * _strtok - respin of strtok()
- *   *
- *    * @str: string to split
- *     * @delim: string of delimiters
- *      *
- *       * Return: pointer to next token
- *        */
+ * _strtok - respin of strtok()
+ *
+ * @str: string to split
+ * @delim: string of delimiters
+ *
+ * Return: pointer to next token
+ */
 
 char *_strtok(char *str, char *delim)
 {
@@ -95,13 +95,13 @@ char *_strtok(char *str, char *delim)
 }
 
 /**
- *  * _strspn - Gets the length of a prefix substring.
- *   *
- *    * @s: string to be searched
- *     * @accept: string of accepted chars to match
- *      *
- *       * Return: the index of the last matching char
- *        */
+ * _strspn - Gets the length of a prefix substring.
+ *
+ * @s: string to be searched
+ * @accept: string of accepted chars to match
+ *
+ * Return: the index of the last matching char
+ */
 
 unsigned int _strspn(char *s, char *accept)
 {
@@ -126,13 +126,13 @@ unsigned int _strspn(char *s, char *accept)
 }
 
 /**
- *  * _strcspn - Gets the length of a prefix substring NOT matching a given string
- *   *
- *    * @s: string to be searched
- *     * @reject: string of rejected chars to match
- *      *
- *       * Return: the index of the first non matching char
- *        */
+ * _strcspn - Gets the length of a prefix substring NOT matching a given string
+ *
+ * @s: string to be searched
+ * @reject: string of rejected chars to match
+ *
+ * Return: the index of the first non matching char
+ */
 
 unsigned int _strcspn(char *s, char *reject)
 {
@@ -155,4 +155,3 @@ unsigned int _strcspn(char *s, char *reject)
 	}
 	return (n);
 }
-
