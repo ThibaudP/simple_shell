@@ -34,10 +34,17 @@ int hsh_cd(char **args)
 
 int hsh_exit(char **args)
 {
-	(void)args;
+	int i;
 
-/*if (args[1] && atoi(args[1])) exit(atoi(args[1]));*/
-	exit(0);
+
+	if (args[1])
+	{
+		i = atoi(args[1]);
+		exit(i);
+	}
+	else
+		exit(0);
+
 	return (1);
 }
 
@@ -64,35 +71,4 @@ int hsh_help(char **args)
 		i++;
 	}
 	return (1);
-}
-
-/**
- * hsh_check_builtin - checks for builtins
- *
- * @args: arguments passed
- *
- * Return: 1 if success, -1 if failure
- */
-
-int hsh_check_builtin(char **args)
-{
-	int (*builtin_func[]) (char **) = {&hsh_cd, &hsh_help, &hsh_exit};
-	char *builtin_str[] = {"cd", "help", "exit"};
-	int i;
-
-	if (args[0] == NULL)
-	{
-		return (-1);
-	}
-	i = 0;
-	while (i < 2)
-	{
-		if (strcmp(args[0], builtin_str[i]) == 0)
-		{
-			(*builtin_func[i])(args);
-			return (1);
-		}
-		i++;
-	}
-	return (-1);
 }

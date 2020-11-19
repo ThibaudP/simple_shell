@@ -2,7 +2,9 @@
 
 /**
  * free_star - frees an array of strings
+ *
  * @args: Array of malloced strings to free
+ * @n: number of elements to free in main array
  */
 
 void free_star(char **args, int n)

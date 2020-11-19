@@ -28,8 +28,7 @@ char **hsh_tokens(char *line)
 {
 	int i = 0, j = 0, num_toks = 0;
 	char **toks = NULL;
-	char *tmp;
-	char *delim = TOK_DELIM;
+	char *delim = TOK_DELIM, *tmp;
 
 	while (line[i])
 	{
@@ -47,12 +46,11 @@ char **hsh_tokens(char *line)
 
 	toks = malloc(sizeof(char *) * (num_toks + 1));
 
-	tmp = strtok(line, delim);
+	tmp = _strtok(line, delim);
 	while (tmp != NULL)
 	{
-		toks[j] = tmp;
-		j++;
-		tmp = strtok(NULL, delim);
+		toks[j++] = tmp;
+		tmp = _strtok(NULL, delim);
 	}
 	toks[j] = NULL;
 
@@ -72,12 +70,13 @@ int hsh_exec(char **toks)
 	pid_t child_pid;
 	int status;
 
-/* CHECK FOR ALIASES THEN BUILTINS THEN IN PATH THEN FULL PATH HERE */
-
-/*if (toks[0])*/
+	/* CHECK FOR ALIASES THEN BUILTINS THEN IN PATH THEN FULL PATH HERE */
+	
+	if (hsh_check_builtins(toks) == 1)
+		return (1);
 
 	/* IF NOT ALIAS NOR BUILTIN, CHECK FOR COMMAND IN PATH */
-	hsh_checkPATH(toks);
+	hsh_checkpath(toks);
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -98,22 +97,21 @@ int hsh_exec(char **toks)
 	return (1);
 }
 /**
- * hsh_checkPATH - checks command against all PATH folders
+ * hsh_checkpath - checks command against all PATH folders
  *
  * @toks: array of arguments
  *
  * Return: the array of arguments (with full path of command if it exists)
  */
 
-char **hsh_checkPATH(char **toks)
+char **hsh_checkpath(char **toks)
 {
-	char path[1024];
-	char *origpath;
-	char **paths;
-	int i = 0, num_toks = 0;
+	char *path = NULL, *origpath = NULL, *tmp = NULL;
+	char **paths = NULL;
+	int i = 0, j = 0, k = 0, num_toks = 0;
 
-	origpath = getenv("PATH");
-	_strcpy(path, origpath);
+	origpath = _getenv("PATH");
+	path = _strdup(origpath);
 
 	while (path[i])
 	{
@@ -127,49 +125,54 @@ char **hsh_checkPATH(char **toks)
 		}
 	}
 	paths = malloc(sizeof(char *) * (num_toks + 1));
-
-	i = 0;
-	while (i < (num_toks - 1))
+	while (j < (num_toks - 1))
 	{
-		if (i == 0)
-			paths[i] = _strtok(path, ":");
+		if (j == 0)
+			paths[j++] = _strtok(path, ":");
 		else
-			paths[i] = _strtok(NULL, ":");
-		i++;
+			paths[j++] = _strtok(NULL, ":");
 	}
-	return (pathexists(toks, paths));
-}
 
-/**
- * pathexists - checks if provided command exists in the PATH
- *
- * @toks: array of arguments
- * @paths: array of paths
- *
- * Return: the array of arguments
- */
-
-char **pathexists(char **toks, char **paths)
-{
-	int i = 0;
-	char *tmp = NULL;
-	struct stat st;
-
-	while (paths[i])
+	while (paths[k])
 	{
-		tmp = _strdup(paths[i]);
+		tmp = _strdup(paths[k++]);
 		tmp = _strcat(tmp, "/");
 		tmp = _strcat(tmp, toks[0]);
-
-		if (stat(tmp, &st) == 0)
-		{
-			toks[0] = strdup(tmp);
-		}
-		i++;
+		if (access(tmp, X_OK) == 0)
+			toks[0] = _strdup(tmp);
 	}
 	free(tmp);
+	free(path);
 	free(paths);
 
 	return (toks);
+}
 
+/**
+ * hsh_check_builtins - checks for builtins
+ *
+ * @args: arguments passed
+ *
+ * Return: 1 if success, -1 if failure
+ */
+
+int hsh_check_builtins(char **args)
+{
+	if (args[0] == NULL)
+		return (-1);
+
+	if (_strcmp(args[0], "cd") == 0)
+		return (hsh_cd(args));
+	if (_strcmp(args[0], "help") == 0)
+		return (hsh_help(args));
+	if (_strcmp(args[0], "exit") == 0)
+		return (hsh_exit(args));
+/*	if (_strcmp(args[0], "env") == 0)
+		return (hsh_env(args));
+	if (_strcmp(args[0], "setenv") == 0)
+		return (hsh_setenv(args));
+	if (_strcmp(args[0], "unsetenv") == 0)
+		return (hsh_unsetenv(args));
+*/
+	return (0);
 }

@@ -2,3 +2,4 @@ a.out
 *.bak
 *.o
 *test*
+*.swp

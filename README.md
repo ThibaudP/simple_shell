@@ -13,8 +13,8 @@ Below is a list of the required tasks and their corresponding features.
 - [x] Task 0 - Write README, man & AUTHORS files
 - [ ] Task 1 - Write beautiful code that passes the Betty checks
 - [ ] Task 2 - Display prompt, handle simple single commands without arguments, handle errors & EOF condition
-- [ ] Task 3 - Handle commands with arguments
-- [ ] Task 4 - Handle PATH
+- [x] Task 3 - Handle commands with arguments
+- [x] Task 4 - Handle PATH
 - [ ] Task 5 - Implement the ``exit`` built-in
 - [ ] Task 6 - Implement the ``env`` built-in
 - [ ] Task 7 - Blog post "What happens when you type ``ls -l`` in the shell"
@@ -23,7 +23,7 @@ Below is a list of the required tasks and their corresponding features.
 
 - [ ] Task 8 - Contribute to a cohort-wide test suite for this project
 - [ ] Task 9 - Rewrite ``getline();`` (using a buffer & static variables)
-- [ ] Task 10 - Rewrite ``strtok();``
+- [x] Task 10 - Rewrite ``strtok();``
 - [ ] Task 11 - Handle arguments for ``exit``
 - [ ] Task 12 - Handle ``Ctrl+C`` (shell shouldn't quit after ^C input)
 - [ ] Task 13 - Implement the ``setenv`` and ``unsetenv`` built-ins

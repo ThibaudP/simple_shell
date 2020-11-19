@@ -1,10 +1,13 @@
 #include "hsh.h"
 
 /**
- * _getenv - getenv() function
- * @name: Env desired
- * Return: Env
+ * _getenv - respin of getenv()
+ *
+ * @name: Requested key
+ *
+ * Return: Value of requested key
  */
+
 char *_getenv(const char *name)
 {
 	extern char **environ;
@@ -21,7 +24,6 @@ char *_getenv(const char *name)
 			if (environ[i][j] == '=')
 			{
 				j++;
-				printf("%s\n", &environ[i][j]);
 				return (&environ[i][j]);
 			}
 		}
