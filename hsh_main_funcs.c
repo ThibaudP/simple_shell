@@ -53,7 +53,6 @@ char **hsh_tokens(char *line)
 		tmp = _strtok(NULL, delim);
 	}
 	toks[j] = NULL;
-
 	return (toks);
 }
 
@@ -72,7 +71,7 @@ int hsh_exec(char **toks)
 
 	/* CHECK FOR ALIASES THEN BUILTINS THEN IN PATH THEN FULL PATH HERE */
 
-	if (hsh_check_builtins(toks) == 1)
+	if (hsh_check_builtins(toks))
 		return (1);
 
 	/* IF NOT ALIAS NOR BUILTIN, CHECK FOR COMMAND IN PATH */
@@ -88,12 +87,14 @@ int hsh_exec(char **toks)
 	{
 		status = execve(toks[0], toks, NULL);
 		perror(toks[0]);
+		_exit(status);
 	}
 	else
 	{
 		wait(&status);
 	}
-
+	free(toks[0]);
+	free(toks);
 	return (1);
 }
 /**
@@ -106,13 +107,11 @@ int hsh_exec(char **toks)
 
 char **hsh_checkpath(char **toks)
 {
-	char *path, *origpath, *tmp;
+	char *path, *tmp1, *tmp2, *tmp3;
 	char **paths;
 	int i = 0, j = 0, k = 0, num_toks = 0;
 
-	origpath = _getenv("PATH");
-	path = _strdup(origpath);
-
+	path = _strdup(_getenv("PATH"));
 	while (path[i])
 	{
 		if (path[i] == ':')
@@ -125,26 +124,26 @@ char **hsh_checkpath(char **toks)
 		}
 	}
 	paths = malloc(sizeof(char *) * (num_toks + 1));
-	while (j < (num_toks - 1))
+	while (j < (num_toks + 1))
 	{
 		if (j == 0)
 			paths[j++] = _strtok(path, ":");
 		else
 			paths[j++] = _strtok(NULL, ":");
 	}
-
 	while (paths[k])
 	{
-		tmp = _strdup(paths[k++]);
-		tmp = _strcat(tmp, "/");
-		tmp = _strcat(tmp, toks[0]);
-		if (access(tmp, X_OK) == 0)
-			toks[0] = _strdup(tmp);
+		tmp1 = _strdup(paths[k++]);
+		tmp2 = _strcat(tmp1, "/");
+		tmp3 = _strcat(tmp2, toks[0]);
+		if (access(tmp3, X_OK) == 0)
+			toks[0] = _strdup(tmp3);
+		free(tmp1);
+		free(tmp2);
+		free(tmp3);
 	}
-	free(tmp);
 	free(path);
 	free(paths);
-
 	return (toks);
 }
 
@@ -167,12 +166,13 @@ int hsh_check_builtins(char **args)
 		return (hsh_help(args));
 	if (_strcmp(args[0], "exit") == 0)
 		return (hsh_exit(args));
-	/* if (_strcmp(args[0], "env") == 0)
+	/*
+	 * if (_strcmp(args[0], "env") == 0)
 	 * return (hsh_env(args));
 	 * if (_strcmp(args[0], "setenv") == 0)
 	 * return (hsh_setenv(args));
 	 * if (_strcmp(args[0], "unsetenv") == 0)
 	 * return (hsh_unsetenv(args));
-	 **/
+	 */
 	return (0);
 }

@@ -24,20 +24,19 @@
  * @cmd: the command
  * @func: the corresponding function
  */
-
-typedef struct builtins
+/*
+struct data_t 
 {
-	char *cmd;
-	int *(*func)(char **);
-} builtins_t;
-
+	char **argv;
+	char **env;
+};
+*/
 
 /* BUILTINS */
 
 int hsh_cd(char **args);
 int hsh_help(char **args);
 int hsh_exit(char **args);
-int hsh_check_builtins(char **args);
 
 /* STRING UTILS */
 
@@ -51,6 +50,10 @@ char *_strcat(char *s1, char *s2);
 char *_strtok(char *str, char *delim);
 unsigned int _strspn(char *s, char *accept);
 unsigned int _strcspn(char *s, char *reject);
+char *_strchr(char *s, char c);
+
+/* MATH UTILS */
+int _atoi(char *s);
 
 /* MEM UTILS */
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
@@ -65,5 +68,6 @@ char *hsh_getline(void);
 char **hsh_tokens(char *line);
 int hsh_exec(char **toks);
 char **hsh_checkpath(char **toks);
+int hsh_check_builtins(char **args);
 
 #endif

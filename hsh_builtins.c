@@ -34,16 +34,12 @@ int hsh_cd(char **args)
 
 int hsh_exit(char **args)
 {
-	int i;
-
+	int i = 0;
 
 	if (args[1])
-	{
-		i = atoi(args[1]);
-		exit(i);
-	}
-	else
-		exit(0);
+		i = _atoi(args[1]);
+	free(args);
+	_exit(i);
 
 	return (1);
 }

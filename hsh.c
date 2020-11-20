@@ -16,7 +16,6 @@ int main(int ac, char **av, char **env)
 	char **toks = NULL;
 	char *prompt = PROMPT;
 	int status = 1;
-	int i = 0;
 	(void)ac;
 	(void)av;
 	(void)env;
@@ -29,12 +28,12 @@ int main(int ac, char **av, char **env)
 	{
 		_puts(prompt);
 		line = hsh_getline();
-		toks = hsh_tokens(line);
-		status = hsh_exec(toks);
+		if (line[0] != '\n')
+		{
+			toks = hsh_tokens(line);
+			status = hsh_exec(toks);
+		}
 		free(line);
-		while (toks[i])
-			i++;
-		free_star(toks, i);
 	}
 
 	return (0);
