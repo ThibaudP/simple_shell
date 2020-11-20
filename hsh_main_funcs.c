@@ -12,6 +12,8 @@ char *hsh_getline(void)
 	size_t buf = BUFSIZE;
 
 	getline(&line, &buf, stdin);
+	if (feof(stdin))
+		exit(0);
 
 	return (line);
 }
@@ -94,7 +96,6 @@ int hsh_exec(char **toks)
 		wait(&status);
 	}
 	free(toks[0]);
-	free(toks);
 	return (1);
 }
 /**

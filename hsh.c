@@ -28,10 +28,12 @@ int main(int ac, char **av, char **env)
 	{
 		_puts(prompt);
 		line = hsh_getline();
+
 		if (line[0] != '\n')
 		{
 			toks = hsh_tokens(line);
 			status = hsh_exec(toks);
+			free(toks);
 		}
 		free(line);
 	}

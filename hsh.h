@@ -19,18 +19,20 @@
 /* STRUCTS */
 
 /**
- * struct builtins - contains builtin commands & their associated function
+ * struct data - the data structure
  *
- * @cmd: the command
- * @func: the corresponding function
+ * @toks: command tokens
+ * @line: line returned from getline
+ * @env: the environment array
  */
-/*
-struct data_t 
+
+typedef struct data 
 {
-	char **argv;
+	char **toks;
+	char *line;
 	char **env;
-};
-*/
+} data_t;
+
 
 /* BUILTINS */
 
