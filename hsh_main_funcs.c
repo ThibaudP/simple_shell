@@ -63,6 +63,9 @@ int hsh_exec(char **toks)
 
 	hsh_checkpath(toks);
 
+	if (toks[0] == NULL)
+		return (1);
+
 	child_pid = fork();
 	if (child_pid == -1)
 	{
@@ -95,42 +98,47 @@ int hsh_exec(char **toks)
 
 char **hsh_checkpath(char **toks)
 {
-	char *path, *tmp;
+	char *path, *tmp, *origtok = toks[0], error[200];
 	char **paths;
 	int i = 0, j = 0, num_toks = 0;
 
-	if (access(toks[0], X_OK) == 0)
-		return (toks);
-
-	path = _strdup(_getenv("PATH"));
-
-	num_toks = wordcnt(path, ':');
-
-	paths = malloc(sizeof(char *) * (num_toks + 1));
-	while (i < (num_toks + 1))
+	if (_strncmp(toks[0], "/", 1) == 0 || _strncmp(toks[0], "./", 2) == 0)
 	{
-		if (i == 0)
-			paths[i++] = _strtok(path, ":");
-		else
-			paths[i++] = _strtok(NULL, ":");
+		if (access(toks[0], X_OK) == 0)
+			return (toks);
 	}
-	while (paths[j])
+	else
 	{
-		tmp = malloc(sizeof(char) * (_strlen(paths[j]) + _strlen(toks[0]) + 2));
-		_strcpy(tmp, paths[j++]);
-		_strcat(tmp, "/");
-		_strcat(tmp, toks[0]);
-
-		if (access(tmp, X_OK) == 0)
+		path = _strdup(_getenv("PATH"));
+		num_toks = wordcnt(path, ':');
+		paths = malloc(sizeof(char *) * (num_toks + 1));
+		while (i < (num_toks + 1))
 		{
-			toks[0] = _strdup(tmp);
-			free(tmp);
-			break;
+			if (i == 0)
+				paths[i++] = _strtok(path, ":");
+			else
+				paths[i++] = _strtok(NULL, ":");
 		}
-		free(tmp);
+		while (paths[j])
+		{
+			tmp = malloc(sizeof(char) * (_strlen(paths[j]) + _strlen(toks[0]) + 2));
+			_strcat(_strcat(_strcpy(tmp, paths[j++]), "/"), toks[0]);
+			if (access(tmp, X_OK) == 0)
+			{
+				toks[0] = _strdup(tmp);
+				free(tmp);
+				break;
+			}
+			free(tmp);
+		}
+		free(path);
+		free(paths);
 	}
-	free(path);
-	free(paths);
+	if (toks[0] == origtok)
+	{
+		puts(_strcat(_strcat(_strcpy(error, "hsh: 1: "), toks[0]), ": not found"));
+		toks[0] = NULL;
+	}
 	return (toks);
 }
 

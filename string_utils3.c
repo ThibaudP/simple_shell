@@ -52,6 +52,29 @@ int wordcnt(char *str, char delim)
 }
 
 /**
+ * _strncmp - compares 2 strings up to n bytes
+ *
+ * @s1: first string
+ * @s2: second string
+ * @n: number of chars to compare
+ *
+ * Return: diff between first two different chars
+ */
+
+
+int _strncmp(char *s1, char *s2, size_t n)
+{
+	size_t i = 0;
+
+	while (*s1 && *s2 && i++ < n)
+	{
+		if (*s1++ != *s2++)
+			return (*s1 - *s2);
+	}
+	return (0);
+}
+
+/**
  * sig_ign - handler for SIGINT
  *
  * @sig_num: signal to handle

@@ -27,7 +27,7 @@
  * @env: the environment array
  */
 
-typedef struct data 
+typedef struct data_s 
 {
 	char **toks;
 	char *line;
@@ -57,8 +57,14 @@ unsigned int _strspn(char *s, char *accept);
 unsigned int _strcspn(char *s, char *reject);
 char *_strchr(char *s, char c);
 int wordcnt(char *str, char delim);
+int _strncmp(char *s1, char *s2, size_t n);
 
+/* MISC UTILS */
 void sig_ign(int sig_num);
+
+/* DATA UTILS */
+data_t *data_new(char **env);
+char **dupl_env(char **env);
 
 /* MATH UTILS */
 int _atoi(char *s);
