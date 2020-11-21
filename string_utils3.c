@@ -24,9 +24,12 @@ char *_strchr(char *s, char c)
 	return (NULL);
 }
 
+
+
 /**
+ * sig_ign - handler for SIGINT
  *
- *
+ * @sig_num: signal to handle
  */
 
 void sig_ign(int sig_num)

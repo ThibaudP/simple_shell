@@ -69,14 +69,11 @@ int hsh_exec(char **toks)
 	pid_t child_pid;
 	int status;
 
-	/* CHECK FOR ALIASES THEN BUILTINS THEN IN PATH THEN FULL PATH HERE */
-
 	if (hsh_check_builtins(toks))
 		return (1);
 
-	/* IF NOT ALIAS NOR BUILTIN, CHECK FOR COMMAND IN PATH */
 	hsh_checkpath(toks);
-
+	
 	child_pid = fork();
 	if (child_pid == -1)
 	{
@@ -106,7 +103,7 @@ int hsh_exec(char **toks)
 
 char **hsh_checkpath(char **toks)
 {
-	char *path, *tmp1, *tmp2, *tmp3;
+	char *path, *tmp;
 	char **paths;
 	int i = 0, j = 0, k = 0, num_toks = 0;
 
@@ -132,14 +129,23 @@ char **hsh_checkpath(char **toks)
 	}
 	while (paths[k])
 	{
-		tmp1 = _strdup(paths[k++]);
-		tmp2 = _strcat(tmp1, "/");
-		tmp3 = _strcat(tmp2, toks[0]);
-		if (access(tmp3, X_OK) == 0)
-			toks[0] = _strdup(tmp3);
-		free(tmp1);
-		free(tmp2);
-		free(tmp3);
+		tmp = malloc(sizeof(char) * (_strlen(paths[k]) + _strlen(toks[0]) + 2));
+		_strcpy(tmp, paths[k++]);
+		_strcat(tmp, "/");
+		_strcat(tmp, toks[0]);
+
+		_putchar('[');
+		_puts(tmp);
+		_putchar(']');
+		_putchar('\n');
+
+		if (access(tmp, X_OK) == 0)
+		{
+			toks[0] = _strdup(tmp);
+			free(tmp);
+			break;
+		}
+		free(tmp);
 	}
 	free(path);
 	free(paths);
@@ -166,7 +172,7 @@ int hsh_check_builtins(char **args)
 	if (_strcmp(args[0], "exit") == 0)
 		return (hsh_exit(args));
 	if (_strcmp(args[0], "env") == 0)
-		return (hsh_env(args));
+		return (hsh_env());
 	if (_strcmp(args[0], "setenv") == 0)
 		return (hsh_setenv(args));
 	/*

@@ -29,7 +29,7 @@ int main(int ac, char **av, char **env)
 		while (status)
 		{
 			if (isatty(STDIN_FILENO))
-					_puts(PROMPT);
+				_puts(PROMPT);
 			line = hsh_getline();
 			if (line[0] != '\n')
 			{
@@ -43,4 +43,11 @@ int main(int ac, char **av, char **env)
 
 	return (0);
 }
+
+/**
+ * data_pop - Populates the data struct
+ *
+ * @env
+ */
+
 

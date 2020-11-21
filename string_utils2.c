@@ -17,38 +17,32 @@ int _putchar(char c)
 /**
  * _strcat - concatenates two strings
  *
- * @s1: the first string
- * @s2: the second string
+ * @dest: the first string & destination
+ * @src: the second string
  *
- * Return: a pointer to the new string, or NULL on failure
+ * Return: a pointer to the destination string
  */
 
-char *_strcat(char *s1, char *s2)
+char *_strcat(char *dest, char *src)
 {
-	char *str;
 	int i = 0, j = 0;
 
-	str = malloc(sizeof(char) * (_strlen(s1) + _strlen(s2) + 1));
-	if (!str)
-		return (NULL);
-	if (s1 != NULL)
+	if (dest != NULL)
 	{
-		while (s1[i])
-		{
-			str[i] = s1[i];
+		while(dest[i])
 			i++;
-		}
 	}
-	if (s2 != NULL)
+
+	if (src != NULL)
 	{
-		while (s2[j] != '\0')
+		while (src[j] != '\0')
 		{
-			str[i + j] = s2[j];
+			dest[i + j] = src[j];
 			j++;
 		}
 	}
-	str[i + j] = '\0';
-	return (str);
+	dest[i + j] = '\0';
+	return (dest);
 }
 
 /**

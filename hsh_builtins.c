@@ -1,29 +1,30 @@
 #include "hsh.h"
 
 /**
- * hsh_set_env - add or overwrite an env
- * @name: name of env
- * @value: value of env
- * @overwrite: 1 for overwrite, 0 for not
+ * hsh_setenv - add or overwrite an env
+ *
+ * @args: name of env
+ *
  * Return: 0 if success, -1 if failure
  */
 
 int hsh_setenv(char **args)
 {
 	extern char **environ;
-	char *tmp;
+	/* char *tmp;*/
 	int i;
 	int j;
 	int k;
 
-/*	if (_getenv(name))
-	{
-		if (overwrite = 1)
-			_unsetenv(name);
-		else
-			return (0);
-	}
-*/
+/*
+ *	if (_getenv(name))
+ *	{
+ *		if (overwrite = 1)
+ *			_unsetenv(name);
+ *		else
+ *			return (0);
+ *	}
+ */
 	i = 0;
 	while (environ[i] != NULL)
 	{
@@ -51,16 +52,15 @@ int hsh_setenv(char **args)
 
 /**
  * hsh_env - print environment variables
- * @args: array of args
+ *
  * Return: 0 if success, -1 if failure
  */
-int hsh_env(char *args)
+
+int hsh_env(void)
 {
 	extern char **environ;
 	int i;
 
-	if (args == NULL)
-		return (-1);
 	i = 0;
 	while (environ[i])
 	{
