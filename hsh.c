@@ -24,11 +24,11 @@ int main(int ac, char **av, char **env)
 
 
 	/* INTERACTIVE MODE */
+	signal(SIGINT, SIG_IGN);
 	while (status)
 	{
 		_puts(prompt);
 		line = hsh_getline();
-
 		if (line[0] != '\n')
 		{
 			toks = hsh_tokens(line);
