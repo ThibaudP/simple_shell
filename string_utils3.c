@@ -23,3 +23,17 @@ char *_strchr(char *s, char c)
 		return (s + i);
 	return (NULL);
 }
+
+/**
+ *
+ *
+ */
+
+void sig_ign(int sig_num)
+{
+	if (sig_num == SIGINT)
+	{
+		_putchar('\n');
+		_puts(PROMPT);
+	}
+}

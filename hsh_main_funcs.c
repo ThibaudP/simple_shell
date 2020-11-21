@@ -14,7 +14,6 @@ char *hsh_getline(void)
 	getline(&line, &buf, stdin);
 	if (feof(stdin))
 		exit(0);
-
 	return (line);
 }
 

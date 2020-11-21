@@ -24,7 +24,7 @@ int main(int ac, char **av, char **env)
 
 
 	/* INTERACTIVE MODE */
-	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, sig_ign);
 	while (status)
 	{
 		_puts(prompt);
