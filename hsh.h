@@ -56,6 +56,8 @@ char *_strtok(char *str, char *delim);
 unsigned int _strspn(char *s, char *accept);
 unsigned int _strcspn(char *s, char *reject);
 char *_strchr(char *s, char c);
+int wordcnt(char *str, char delim);
+
 void sig_ign(int sig_num);
 
 /* MATH UTILS */

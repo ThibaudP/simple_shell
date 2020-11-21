@@ -26,33 +26,21 @@ char *hsh_getline(void)
 
 char **hsh_tokens(char *line)
 {
-	int i = 0, j = 0, num_toks = 0;
+	int i = 0, num_toks = 0;
 	char **toks = NULL;
 	char *delim = TOK_DELIM, *tmp;
 
-	while (line[i])
-	{
-		if (line[i] == ' ')
-		{
-			i++;
-		}
-		else
-		{
-			while (line[i] && line[i] != ' ')
-				i++;
-			num_toks++;
-		}
-	}
+	num_toks = wordcnt(line, ' ');
 
 	toks = malloc(sizeof(char *) * (num_toks + 1));
 
 	tmp = _strtok(line, delim);
 	while (tmp != NULL)
 	{
-		toks[j++] = tmp;
+		toks[i++] = tmp;
 		tmp = _strtok(NULL, delim);
 	}
-	toks[j] = NULL;
+	toks[i] = NULL;
 	return (toks);
 }
 
@@ -68,12 +56,13 @@ int hsh_exec(char **toks)
 {
 	pid_t child_pid;
 	int status;
+	char *tmp = toks[0];
 
 	if (hsh_check_builtins(toks))
 		return (1);
 
 	hsh_checkpath(toks);
-	
+
 	child_pid = fork();
 	if (child_pid == -1)
 	{
@@ -90,7 +79,10 @@ int hsh_exec(char **toks)
 	{
 		wait(&status);
 	}
-	free(toks[0]);
+
+	if (_strcmp(toks[0], tmp) != 0)
+		free(toks[0]);
+
 	return (1);
 }
 /**
@@ -105,39 +97,29 @@ char **hsh_checkpath(char **toks)
 {
 	char *path, *tmp;
 	char **paths;
-	int i = 0, j = 0, k = 0, num_toks = 0;
+	int i = 0, j = 0, num_toks = 0;
+
+	if (access(toks[0], X_OK) == 0)
+		return (toks);
 
 	path = _strdup(_getenv("PATH"));
-	while (path[i])
-	{
-		if (path[i] == ':')
-			i++;
-		else
-		{
-			while (path[i] && path[i] != ':')
-				i++;
-			num_toks++;
-		}
-	}
+
+	num_toks = wordcnt(path, ':');
+
 	paths = malloc(sizeof(char *) * (num_toks + 1));
-	while (j < (num_toks + 1))
+	while (i < (num_toks + 1))
 	{
-		if (j == 0)
-			paths[j++] = _strtok(path, ":");
+		if (i == 0)
+			paths[i++] = _strtok(path, ":");
 		else
-			paths[j++] = _strtok(NULL, ":");
+			paths[i++] = _strtok(NULL, ":");
 	}
-	while (paths[k])
+	while (paths[j])
 	{
-		tmp = malloc(sizeof(char) * (_strlen(paths[k]) + _strlen(toks[0]) + 2));
-		_strcpy(tmp, paths[k++]);
+		tmp = malloc(sizeof(char) * (_strlen(paths[j]) + _strlen(toks[0]) + 2));
+		_strcpy(tmp, paths[j++]);
 		_strcat(tmp, "/");
 		_strcat(tmp, toks[0]);
-
-		_putchar('[');
-		_puts(tmp);
-		_putchar(']');
-		_putchar('\n');
 
 		if (access(tmp, X_OK) == 0)
 		{

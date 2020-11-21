@@ -29,7 +29,7 @@ char *_strcat(char *dest, char *src)
 
 	if (dest != NULL)
 	{
-		while(dest[i])
+		while (dest[i])
 			i++;
 	}
 
