@@ -11,8 +11,7 @@ char *hsh_getline(void)
 	char *line = NULL;
 	size_t buf = BUFSIZE;
 
-	getline(&line, &buf, stdin);
-	if (feof(stdin))
+	if ((getline(&line, &buf, stdin)) == EOF)
 		exit(0);
 	return (line);
 }

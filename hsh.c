@@ -14,29 +14,33 @@ int main(int ac, char **av, char **env)
 {
 	char *line = NULL;
 	char **toks = NULL;
-	char *prompt = PROMPT;
 	int status = 1;
-	(void)ac;
 	(void)av;
 	(void)env;
-	/* NON-INTERACTIVE MODE */
 
-
-
-	/* INTERACTIVE MODE */
 	signal(SIGINT, sig_ign);
-	while (status)
+
+	if (ac > 1)
 	{
-		_puts(prompt);
-		line = hsh_getline();
-		if (line[0] != '\n')
+		/*filemode*/
+	}
+	else
+	{
+		while (status)
 		{
-			toks = hsh_tokens(line);
-			status = hsh_exec(toks);
-			free(toks);
+			if (isatty(STDIN_FILENO))
+					_puts(PROMPT);
+			line = hsh_getline();
+			if (line[0] != '\n')
+			{
+				toks = hsh_tokens(line);
+				status = hsh_exec(toks);
+				free(toks);
+			}
+			free(line);
 		}
-		free(line);
 	}
 
 	return (0);
 }
+
