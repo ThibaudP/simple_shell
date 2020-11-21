@@ -1,6 +1,77 @@
 #include "hsh.h"
 
 /**
+ * hsh_set_env - add or overwrite an env
+ * @name: name of env
+ * @value: value of env
+ * @overwrite: 1 for overwrite, 0 for not
+ * Return: 0 if success, -1 if failure
+ */
+
+int hsh_setenv(char **args)
+{
+	extern char **environ;
+	char *tmp;
+	int i;
+	int j;
+	int k;
+
+/*	if (_getenv(name))
+	{
+		if (overwrite = 1)
+			_unsetenv(name);
+		else
+			return (0);
+	}
+*/
+	i = 0;
+	while (environ[i] != NULL)
+	{
+		i++;
+	}
+	environ[i] = malloc(_strlen(args[1]) + _strlen(args[2]) + 2);
+	j = 0;
+	while (args[1])
+	{
+		environ[i][j] = args[1][j];
+		j++;
+	}
+	environ[i][j] = '=';
+	j++;
+	k = 0;
+	while (args[2])
+	{
+		environ[i][j++] = args[2][k++];
+	}
+	environ[i][j] = '\0';
+	i++;
+	environ[i] = NULL;
+	return (0);
+}
+
+/**
+ * hsh_env - print environment variables
+ * @args: array of args
+ * Return: 0 if success, -1 if failure
+ */
+int hsh_env(char *args)
+{
+	extern char **environ;
+	int i;
+
+	if (args == NULL)
+		return (-1);
+	i = 0;
+	while (environ[i])
+	{
+		_puts(environ[i]);
+		_putchar('\n');
+		i++;
+	}
+	return (0);
+}
+
+/**
  * hsh_cd - changes directory
  *
  * @args: array of args

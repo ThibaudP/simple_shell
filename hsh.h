@@ -40,6 +40,7 @@ typedef struct data
 int hsh_cd(char **args);
 int hsh_help(char **args);
 int hsh_exit(char **args);
+int hsh_setenv(char **args);
 
 /* STRING UTILS */
 

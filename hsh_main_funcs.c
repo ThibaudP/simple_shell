@@ -165,11 +165,11 @@ int hsh_check_builtins(char **args)
 		return (hsh_help(args));
 	if (_strcmp(args[0], "exit") == 0)
 		return (hsh_exit(args));
+	if (_strcmp(args[0], "env") == 0)
+		return (hsh_env(args));
+	if (_strcmp(args[0], "setenv") == 0)
+		return (hsh_setenv(args));
 	/*
-	 * if (_strcmp(args[0], "env") == 0)
-	 * return (hsh_env(args));
-	 * if (_strcmp(args[0], "setenv") == 0)
-	 * return (hsh_setenv(args));
 	 * if (_strcmp(args[0], "unsetenv") == 0)
 	 * return (hsh_unsetenv(args));
 	 */
