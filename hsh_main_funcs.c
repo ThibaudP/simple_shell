@@ -3,25 +3,26 @@
 /**
  * hsh_getline - gets the line
  *
+ * @data: the data struct
+ *
  * Return: A string containing the command to execute
  */
 
-char *hsh_getline(void)
+data_t *hsh_getline(data_t *data)
 {
-	char *line = NULL;
-	size_t buf = BUFSIZE;
+	size_t buf = 0;
 
-	if ((getline(&line, &buf, stdin)) == EOF)
+	if ((getline(&(data->line), &buf, stdin)) == EOF)
 		exit(0);
-	return (line);
+	return (data);
 }
 
 /**
  * hsh_tokens - splits the line
  *
- * @data: the command line typed by the user
+ * @data: the data struct
  *
- * Return: an array of strings containing all tokens
+ * Return: char** containing all tokens in the struct
  */
 
 data_t *hsh_tokens(data_t *data)
@@ -46,7 +47,7 @@ data_t *hsh_tokens(data_t *data)
 /**
  * hsh_exec - executes a command from its tokens
  *
- * @toks: the array of argv tokens
+ * @data: the data struct
  *
  * Return: a status code
  */
@@ -74,7 +75,6 @@ int hsh_exec(data_t *data)
 	if (child_pid == 0)
 	{
 		status = execve(data->toks[0], data->toks, NULL);
-		perror(data->toks[0]);
 		_exit(status);
 	}
 	else
@@ -90,21 +90,24 @@ int hsh_exec(data_t *data)
 /**
  * hsh_checkpath - checks command against all PATH folders
  *
- * @toks: array of arguments
+ * @data: the data struct
  *
- * Return: the array of arguments (with full path of command if it exists)
+ * Return: the data struct
  */
 
 data_t *hsh_checkpath(data_t *data)
 {
-	char *path, *tmp, *origtok = data->toks[0], error[200];
+	char *path, *tmp, *origtok = data->toks[0];
 	char **paths;
-	int i = 0, j = 0, num_toks = 0;
+	int i = 0, j = 0, num_toks = 0, cmp1, cmp2, lentok;
 
-	if (_strncmp(data->toks[0], "/", 1) == 0 || _strncmp(data->toks[0], "./", 2) == 0)
+	cmp1 = _strncmp(data->toks[0], "/", 1);
+	cmp2 = _strncmp(data->toks[0], "./", 2);
+	if (cmp1 == 0 || cmp2 == 0)
 	{
-		if (access(data->toks[0], X_OK) == 0)
-			return (data);
+		if (access(data->toks[0], X_OK) != 0)
+			errcmp(data, origtok);
+		return (data);
 	}
 	else
 	{
@@ -120,7 +123,8 @@ data_t *hsh_checkpath(data_t *data)
 		}
 		while (paths[j])
 		{
-			tmp = malloc(sizeof(char) * (_strlen(paths[j]) + _strlen(data->toks[0]) + 2));
+			lentok = _strlen(data->toks[0]);
+			tmp = malloc(sizeof(char) * (_strlen(paths[j]) + lentok + 2));
 			_strcat(_strcat(_strcpy(tmp, paths[j++]), "/"), data->toks[0]);
 			if (access(tmp, X_OK) == 0)
 			{
@@ -133,20 +137,16 @@ data_t *hsh_checkpath(data_t *data)
 		free(path);
 		free(paths);
 	}
-	if (data->toks[0] == origtok)
-	{
-		puts(_strcat(_strcat(_strcpy(error, "hsh: 1: "), data->toks[0]), ": not found"));
-		data->toks[0] = NULL;
-	}
+	errcmp(data, origtok);
 	return (data);
 }
 
 /**
  * hsh_check_builtins - checks for builtins
  *
- * @args: arguments passed
+ * @data: the data struct
  *
- * Return: 1 if success, -1 if failure
+ * Return: 1 if success, 0 if failure
  */
 
 int hsh_check_builtins(data_t *data)

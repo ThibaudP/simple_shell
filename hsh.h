@@ -13,21 +13,20 @@
 #include <signal.h>
 
 /* MACROS */
-#define BUFSIZE 1024
 #define TOK_DELIM " \n\t\r\a"
 #define PROMPT "$ "
 
 /* STRUCTS */
 
 /**
- * struct data - the data structure
+ * struct data_s - the data structure
  *
  * @toks: command tokens
  * @line: line returned from getline
  * @env: the environment array
  */
 
-typedef struct data_s 
+typedef struct data_s
 {
 	char **toks;
 	char *line;
@@ -58,6 +57,7 @@ unsigned int _strcspn(char *s, char *reject);
 char *_strchr(char *s, char c);
 int wordcnt(char *str, char delim);
 int _strncmp(char *s1, char *s2, size_t n);
+void rev_string(char *str);
 
 /* MISC UTILS */
 void sig_ign(int sig_num);
@@ -68,6 +68,7 @@ data_t *dupl_env(data_t *data, char **env);
 
 /* MATH UTILS */
 int _atoi(char *s);
+char *_itoa(int i);
 
 /* MEM UTILS */
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
@@ -76,9 +77,14 @@ void free_star(char **args, int n);
 /* ENV UTILS */
 char *_getenv(data_t *data, char *name);
 
+/* ERR UTILS */
+
+void errcmp(data_t *data, char *compare);
+
+
 /* MAIN FUNCTIONS */
 
-char *hsh_getline(void);
+data_t *hsh_getline(data_t *data);
 data_t *hsh_tokens(data_t *data);
 int hsh_exec(data_t *data);
 data_t *hsh_checkpath(data_t *data);

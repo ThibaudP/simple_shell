@@ -31,7 +31,7 @@ int main(int ac, char **av, char **env)
 		{
 			if (isatty(STDIN_FILENO))
 				_puts(PROMPT);
-			data->line = hsh_getline();
+			hsh_getline(data);
 			if (data->line[0] != '\n')
 			{
 				data = hsh_tokens(data);
@@ -48,9 +48,7 @@ int main(int ac, char **av, char **env)
 /**
  * data_new - Populates the data struct
  *
- * @line: line from getline
  * @env: environment array
- * @toks: toks from hsh_tokens
  *
  * Return: a data_t struct
  */
@@ -64,6 +62,7 @@ data_t *data_new(char **env)
 	{
 		dupl_env(new, env);
 	}
+	new->line = NULL;
 
 	return (new);
 }
@@ -71,9 +70,10 @@ data_t *data_new(char **env)
 /**
  * dupl_env - Duplicates the **env
  *
+ * @data: the data struct
  * @env: the environment
  *
- * Return: an array of strings
+ * Return: a duplicate of the env in data->env
  */
 
 data_t *dupl_env(data_t *data, char **env)

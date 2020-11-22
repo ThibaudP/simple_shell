@@ -75,6 +75,26 @@ int _strncmp(char *s1, char *s2, size_t n)
 }
 
 /**
+ * rev_string - reverses a string
+ *
+ * @str: the string to be reversed
+ */
+
+void rev_string(char *str)
+{
+	int i, j = 0, len = (_strlen(str) - 1);
+	char tmp;
+
+	for (i = len; i > j; i--)
+	{
+		tmp = str[i];
+		str[i] = str[j];
+		str[j] = tmp;
+		j++;
+	}
+}
+
+/**
  * sig_ign - handler for SIGINT
  *
  * @sig_num: signal to handle

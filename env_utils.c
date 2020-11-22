@@ -3,6 +3,7 @@
 /**
  * _getenv - respin of getenv()
  *
+ * @data: the data struct
  * @name: Requested key
  *
  * Return: Value of requested key

@@ -3,15 +3,16 @@
 /**
  * hsh_setenv - add or overwrite an env
  *
- * @args: name of env
+ * @data: the data struct
  *
- * Return: 0 if success, -1 if failure
+ * Return: 1 if success, -1 if failure
  */
 
 int hsh_setenv(data_t *data)
 {
 	/* char *tmp;*/
-	int i = 0, j = 0, k = 0;
+	int i = 0, j = 0, k = 0, osizenv = 0, nsizenv = 0;
+	int tok1siz = _strlen(data->toks[1]), tok2siz = _strlen(data->toks[2]);
 
 	if (!data->toks[2])
 	{
@@ -29,26 +30,22 @@ int hsh_setenv(data_t *data)
  */
 	while (data->env[i] != NULL)
 		i++;
-	data->env = _realloc(data->env, (sizeof(char *) * (i + 1)), (sizeof(char *) * (i + 2)));
-	data->env[i] = malloc(sizeof(char) * (_strlen(data->toks[1]) + _strlen(data->toks[2]) + 2));
 
-	while (data->toks[1][j])
-	{
+	osizenv = sizeof(char *) * (i + 1);
+	nsizenv = sizeof(char *) * (i + 2);
+	data->env = _realloc(data->env, osizenv, nsizenv);
+	data->env[i] = malloc(sizeof(char) * (tok1siz + tok2siz));
+
+	for (j = 0; data->toks[1][j]; j++)
 		data->env[i][j] = data->toks[1][j];
-		j++;
-	}
-	data->env[i][j] = '=';
-	j++;
+
+	data->env[i][j++] = '=';
 
 	while (data->toks[2][k])
-	{
-		data->env[i][j] = data->toks[2][k];
-		j++;
-		k++;
-	}
-	data->env[i][j] = '\0';
-	i++;
-	
+		data->env[i][j++] = data->toks[2][k++];
+
+	data->env[i++][j] = '\0';
+
 	data->env[i] = NULL;
 	return (1);
 }
@@ -56,7 +53,9 @@ int hsh_setenv(data_t *data)
 /**
  * hsh_env - print environment variables
  *
- * Return: 0 if success, -1 if failure
+ * @data: the data struct
+ *
+ * Return: Always 1
  */
 
 int hsh_env(data_t *data)
@@ -76,9 +75,9 @@ int hsh_env(data_t *data)
 /**
  * hsh_cd - changes directory
  *
- * @args: array of args
+ * @data: the data struct
  *
- * Return: 1 if success, -1 if failure
+ * Return: 1 if success, -1 if folder doesn't exist
  */
 
 int hsh_cd(data_t *data)
@@ -100,9 +99,9 @@ int hsh_cd(data_t *data)
 /**
  * hsh_exit - Exits the shell
  *
- * @args: arguments to command
+ * @data: the data struct
  *
- * Return: exit
+ * Return: -1 if failure
  */
 
 int hsh_exit(data_t *data)
@@ -122,13 +121,13 @@ int hsh_exit(data_t *data)
 
 	_exit(i);
 
-	return (1);
+	return (-1);
 }
 
 /**
  * hsh_help - user help
  *
- * @args: arguments to command
+ * @data: the data struct
  *
  * Return: 1 if success, -1 if failure
  */
