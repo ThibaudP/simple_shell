@@ -169,35 +169,3 @@ data_t *hsh_checkpath2(data_t *data, char **paths)
 	}
 	return (data);
 }
-
-
-
-/**
- * hsh_check_builtins - checks for builtins
- *
- * @data: the data struct
- *
- * Return: 1 if success, 0 if failure
- */
-
-int hsh_check_builtins(data_t *data)
-{
-	if (data->toks[0] == NULL)
-		return (-1);
-
-	if (_strcmp(data->toks[0], "cd") == 0)
-		return (hsh_cd(data));
-	if (_strcmp(data->toks[0], "help") == 0)
-		return (hsh_help(data));
-	if (_strcmp(data->toks[0], "exit") == 0)
-		return (hsh_exit(data));
-	if (_strcmp(data->toks[0], "env") == 0)
-		return (hsh_env(data));
-	if (_strcmp(data->toks[0], "setenv") == 0)
-		return (hsh_setenv(data));
-	/*
-	 * if (_strcmp(data->toks[0], "unsetenv") == 0)
-	 * return (hsh_unsetenv(data));
-	 */
-	return (0);
-}
