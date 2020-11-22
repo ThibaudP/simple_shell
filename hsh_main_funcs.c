@@ -140,6 +140,7 @@ data_t *hsh_checkpath(data_t *data)
  * hsh_checkpath2 - checks command against all PATH folders
  *
  * @data: the data struct
+ * @paths: all paths from PATH
  *
  * Return: the data struct
  */

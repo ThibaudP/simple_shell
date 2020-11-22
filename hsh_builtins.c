@@ -62,18 +62,26 @@ int hsh_env(data_t *data)
 
 int hsh_cd(data_t *data)
 {
+	char *path;
+	char *cwd = malloc(sizeof(char) * 4096);
+
 	if (!data->toks[1])
-	{
-		chdir("~");
-		return (1);
-	}
+		path = _strdup(_getenv(data, "HOME"));
+	else if (_strcmp(data->toks[1], "-") == 0)
+		path = _strdup(_getenv(data, "OLDPWD"));
 	else
-	{
-		if (chdir(data->toks[1]) == -1)
-			perror("cd");
-		return (1);
-	}
-	return (-1);
+		path = _strdup(data->toks[1]);
+
+	if (chdir(path) == -1)
+		perror("cd");
+
+	getcwd(cwd, 4096);
+	setenv("OLDPWD", getenv("PWD"), 1);
+	setenv("PWD", cwd, 1);
+	free(path);
+	free(cwd);
+	
+	return (1);
 }
 
 /**
