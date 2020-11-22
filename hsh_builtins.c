@@ -23,10 +23,8 @@ int hsh_check_builtins(data_t *data)
 		return (hsh_env(data));
 	if (_strcmp(data->toks[0], "setenv") == 0)
 		return (hsh_setenv(data));
-	/*
-	 * if (_strcmp(data->toks[0], "unsetenv") == 0)
-	 * return (hsh_unsetenv(data));
-	 */
+	if (_strcmp(data->toks[0], "unsetenv") == 0)
+		return (hsh_unsetenv(data, data->toks[1]));
 	return (0);
 }
 
