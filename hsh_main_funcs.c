@@ -87,6 +87,7 @@ int hsh_exec(data_t *data)
 
 	return (1);
 }
+
 /**
  * hsh_checkpath - checks command against all PATH folders
  *
@@ -97,9 +98,9 @@ int hsh_exec(data_t *data)
 
 data_t *hsh_checkpath(data_t *data)
 {
-	char *path, *tmp, *origtok = data->toks[0];
+	char *path, *origtok = data->toks[0];
 	char **paths;
-	int i = 0, j = 0, num_toks = 0, cmp1, cmp2, lentok;
+	int i = 0, num_toks = 0, cmp1, cmp2;
 
 	cmp1 = _strncmp(data->toks[0], "/", 1);
 	cmp2 = _strncmp(data->toks[0], "./", 2);
@@ -114,6 +115,11 @@ data_t *hsh_checkpath(data_t *data)
 		path = _strdup(_getenv(data, "PATH"));
 		num_toks = wordcnt(path, ':');
 		paths = malloc(sizeof(char *) * (num_toks + 1));
+		if (!paths)
+		{
+			_puts("Couldn't allocate memory");
+			return (data);
+		}
 		while (i < (num_toks + 1))
 		{
 			if (i == 0)
@@ -121,25 +127,50 @@ data_t *hsh_checkpath(data_t *data)
 			else
 				paths[i++] = _strtok(NULL, ":");
 		}
-		while (paths[j])
-		{
-			lentok = _strlen(data->toks[0]);
-			tmp = malloc(sizeof(char) * (_strlen(paths[j]) + lentok + 2));
-			_strcat(_strcat(_strcpy(tmp, paths[j++]), "/"), data->toks[0]);
-			if (access(tmp, X_OK) == 0)
-			{
-				data->toks[0] = _strdup(tmp);
-				free(tmp);
-				break;
-			}
-			free(tmp);
-		}
+		hsh_checkpath2(data, paths);
+
 		free(path);
 		free(paths);
 	}
 	errcmp(data, origtok);
 	return (data);
 }
+
+/**
+ * hsh_checkpath2 - checks command against all PATH folders
+ *
+ * @data: the data struct
+ *
+ * Return: the data struct
+ */
+
+data_t *hsh_checkpath2(data_t *data, char **paths)
+{
+	int j = 0, lentok = 0;
+	char *tmp = NULL;
+
+	while (paths[j])
+	{
+		lentok = _strlen(data->toks[0]);
+		tmp = malloc(sizeof(char) * (_strlen(paths[j]) + lentok + 2));
+		_strcat(_strcat(_strcpy(tmp, paths[j++]), "/"), data->toks[0]);
+		if (!tmp)
+		{
+			_puts("Couldn't allocate memory");
+			return (data);
+		}
+		if (access(tmp, X_OK) == 0)
+		{
+			data->toks[0] = _strdup(tmp);
+			free(tmp);
+			break;
+		}
+		free(tmp);
+	}
+	return (data);
+}
+
+
 
 /**
  * hsh_check_builtins - checks for builtins

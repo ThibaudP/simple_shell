@@ -88,6 +88,7 @@ data_t *hsh_getline(data_t *data);
 data_t *hsh_tokens(data_t *data);
 int hsh_exec(data_t *data);
 data_t *hsh_checkpath(data_t *data);
+data_t *hsh_checkpath2(data_t *data, char **paths);
 int hsh_check_builtins(data_t *data);
 
 #endif
