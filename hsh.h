@@ -41,6 +41,7 @@ int hsh_help(data_t *data);
 int hsh_exit(data_t *data);
 int hsh_env(data_t *data);
 int hsh_setenv(data_t *data);
+int hsh_unsetenv(data_t *data, char *name);
 
 /* STRING UTILS */
 
