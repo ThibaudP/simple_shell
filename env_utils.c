@@ -41,7 +41,7 @@ char *_getenv(data_t *data, char *name)
 
 int _setenv(data_t *data, char *name, char *value)
 {
-	int i = 0, j = 0, k = 0, osizenv = 0, nsizenv = 0;
+	int i = 0, osizenv = 0, nsizenv = 0;
 	int tok1siz = _strlen(name), tok2siz = _strlen(value);
 
 	if (name == NULL || value == NULL)
@@ -63,16 +63,11 @@ int _setenv(data_t *data, char *name, char *value)
 	data->env = _realloc(data->env, osizenv, nsizenv);
 	data->env[i] = malloc(sizeof(char) * (tok1siz + tok2siz + 2));
 
-	for (j = 0; name[j]; j++)
-		data->env[i][j] = name[j];
+	_strcpy(data->env[i], name);
+	_strcat(data->env[i], "=");
+	_strcat(data->env[i], value);
 
-	data->env[i][j++] = '=';
-
-	while (name[k])
-		data->env[i][j++] = name[k++];
-
-	data->env[i++][j] = '\0';
-
+	i++;
 	data->env[i] = NULL;
 	return (1);
 }
