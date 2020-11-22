@@ -8,14 +8,16 @@
  * Return: 0 if success, -1 if failure
  */
 
-int hsh_setenv(char **args)
+int hsh_setenv(data_t *data)
 {
-	extern char **environ;
 	/* char *tmp;*/
-	int i;
-	int j;
-	int k;
+	int i = 0, j = 0, k = 0;
 
+	if (!data->toks[2])
+	{
+		puts("setenv takes 2 parameters!");
+		return (1);
+	}
 /*
  *	if (_getenv(name))
  *	{
@@ -25,29 +27,30 @@ int hsh_setenv(char **args)
  *			return (0);
  *	}
  */
-	i = 0;
-	while (environ[i] != NULL)
-	{
+	while (data->env[i] != NULL)
 		i++;
-	}
-	environ[i] = malloc(_strlen(args[1]) + _strlen(args[2]) + 2);
-	j = 0;
-	while (args[1])
+	data->env = _realloc(data->env, (sizeof(char *) * (i + 1)), (sizeof(char *) * (i + 2)));
+	data->env[i] = malloc(sizeof(char) * (_strlen(data->toks[1]) + _strlen(data->toks[2]) + 2));
+
+	while (data->toks[1][j])
 	{
-		environ[i][j] = args[1][j];
+		data->env[i][j] = data->toks[1][j];
 		j++;
 	}
-	environ[i][j] = '=';
+	data->env[i][j] = '=';
 	j++;
-	k = 0;
-	while (args[2])
+
+	while (data->toks[2][k])
 	{
-		environ[i][j++] = args[2][k++];
+		data->env[i][j] = data->toks[2][k];
+		j++;
+		k++;
 	}
-	environ[i][j] = '\0';
+	data->env[i][j] = '\0';
 	i++;
-	environ[i] = NULL;
-	return (0);
+	
+	data->env[i] = NULL;
+	return (1);
 }
 
 /**
@@ -56,19 +59,18 @@ int hsh_setenv(char **args)
  * Return: 0 if success, -1 if failure
  */
 
-int hsh_env(void)
+int hsh_env(data_t *data)
 {
-	extern char **environ;
 	int i;
 
 	i = 0;
-	while (environ[i])
+	while (data->env[i])
 	{
-		_puts(environ[i]);
+		_puts(data->env[i]);
 		_putchar('\n');
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 /**
@@ -79,16 +81,16 @@ int hsh_env(void)
  * Return: 1 if success, -1 if failure
  */
 
-int hsh_cd(char **args)
+int hsh_cd(data_t *data)
 {
-	if (!args[1])
+	if (!data->toks[1])
 	{
 		chdir("~");
 		return (1);
 	}
 	else
 	{
-		if (chdir(args[1]) == -1)
+		if (chdir(data->toks[1]) == -1)
 			perror("cd");
 		return (1);
 	}
@@ -103,13 +105,21 @@ int hsh_cd(char **args)
  * Return: exit
  */
 
-int hsh_exit(char **args)
+int hsh_exit(data_t *data)
 {
-	int i = 0;
+	int i = 0, j = 0;
 
-	if (args[1])
-		i = _atoi(args[1]);
-	free(args);
+	if (data->toks[1])
+		i = _atoi(data->toks[1]);
+	free(data->toks);
+
+	while (data->env[j])
+		j++;
+
+	free_star(data->env, j);
+	free(data->line);
+	free(data);
+
 	_exit(i);
 
 	return (1);
@@ -123,11 +133,11 @@ int hsh_exit(char **args)
  * Return: 1 if success, -1 if failure
  */
 
-int hsh_help(char **args)
+int hsh_help(data_t *data)
 {
 	int i;
 	char *builtin_str[] = {"cd", "help", "exit"};
-	(void)args;
+	(void)data;
 
 	printf("Usage : program name + argument + enter\n");
 	printf("Here are builtins :\n");

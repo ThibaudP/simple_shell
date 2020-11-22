@@ -19,29 +19,28 @@ char *hsh_getline(void)
 /**
  * hsh_tokens - splits the line
  *
- * @line: the command line typed by the user
+ * @data: the command line typed by the user
  *
  * Return: an array of strings containing all tokens
  */
 
-char **hsh_tokens(char *line)
+data_t *hsh_tokens(data_t *data)
 {
 	int i = 0, num_toks = 0;
-	char **toks = NULL;
 	char *delim = TOK_DELIM, *tmp;
 
-	num_toks = wordcnt(line, ' ');
+	num_toks = wordcnt(data->line, ' ');
 
-	toks = malloc(sizeof(char *) * (num_toks + 1));
+	data->toks = malloc(sizeof(char *) * (num_toks + 1));
 
-	tmp = _strtok(line, delim);
+	tmp = _strtok(data->line, delim);
 	while (tmp != NULL)
 	{
-		toks[i++] = tmp;
+		data->toks[i++] = tmp;
 		tmp = _strtok(NULL, delim);
 	}
-	toks[i] = NULL;
-	return (toks);
+	data->toks[i] = NULL;
+	return (data);
 }
 
 /**
@@ -52,18 +51,18 @@ char **hsh_tokens(char *line)
  * Return: a status code
  */
 
-int hsh_exec(char **toks)
+int hsh_exec(data_t *data)
 {
 	pid_t child_pid;
 	int status;
-	char *tmp = toks[0];
+	char *tmp = data->toks[0];
 
-	if (hsh_check_builtins(toks))
+	if (hsh_check_builtins(data))
 		return (1);
 
-	hsh_checkpath(toks);
+	hsh_checkpath(data);
 
-	if (toks[0] == NULL)
+	if (data->toks[0] == NULL)
 		return (1);
 
 	child_pid = fork();
@@ -74,8 +73,8 @@ int hsh_exec(char **toks)
 	}
 	if (child_pid == 0)
 	{
-		status = execve(toks[0], toks, NULL);
-		perror(toks[0]);
+		status = execve(data->toks[0], data->toks, NULL);
+		perror(data->toks[0]);
 		_exit(status);
 	}
 	else
@@ -83,8 +82,8 @@ int hsh_exec(char **toks)
 		wait(&status);
 	}
 
-	if (_strcmp(toks[0], tmp) != 0)
-		free(toks[0]);
+	if (_strcmp(data->toks[0], tmp) != 0)
+		free(data->toks[0]);
 
 	return (1);
 }
@@ -96,20 +95,20 @@ int hsh_exec(char **toks)
  * Return: the array of arguments (with full path of command if it exists)
  */
 
-char **hsh_checkpath(char **toks)
+data_t *hsh_checkpath(data_t *data)
 {
-	char *path, *tmp, *origtok = toks[0], error[200];
+	char *path, *tmp, *origtok = data->toks[0], error[200];
 	char **paths;
 	int i = 0, j = 0, num_toks = 0;
 
-	if (_strncmp(toks[0], "/", 1) == 0 || _strncmp(toks[0], "./", 2) == 0)
+	if (_strncmp(data->toks[0], "/", 1) == 0 || _strncmp(data->toks[0], "./", 2) == 0)
 	{
-		if (access(toks[0], X_OK) == 0)
-			return (toks);
+		if (access(data->toks[0], X_OK) == 0)
+			return (data);
 	}
 	else
 	{
-		path = _strdup(_getenv("PATH"));
+		path = _strdup(_getenv(data, "PATH"));
 		num_toks = wordcnt(path, ':');
 		paths = malloc(sizeof(char *) * (num_toks + 1));
 		while (i < (num_toks + 1))
@@ -121,11 +120,11 @@ char **hsh_checkpath(char **toks)
 		}
 		while (paths[j])
 		{
-			tmp = malloc(sizeof(char) * (_strlen(paths[j]) + _strlen(toks[0]) + 2));
-			_strcat(_strcat(_strcpy(tmp, paths[j++]), "/"), toks[0]);
+			tmp = malloc(sizeof(char) * (_strlen(paths[j]) + _strlen(data->toks[0]) + 2));
+			_strcat(_strcat(_strcpy(tmp, paths[j++]), "/"), data->toks[0]);
 			if (access(tmp, X_OK) == 0)
 			{
-				toks[0] = _strdup(tmp);
+				data->toks[0] = _strdup(tmp);
 				free(tmp);
 				break;
 			}
@@ -134,12 +133,12 @@ char **hsh_checkpath(char **toks)
 		free(path);
 		free(paths);
 	}
-	if (toks[0] == origtok)
+	if (data->toks[0] == origtok)
 	{
-		puts(_strcat(_strcat(_strcpy(error, "hsh: 1: "), toks[0]), ": not found"));
-		toks[0] = NULL;
+		puts(_strcat(_strcat(_strcpy(error, "hsh: 1: "), data->toks[0]), ": not found"));
+		data->toks[0] = NULL;
 	}
-	return (toks);
+	return (data);
 }
 
 /**
@@ -150,24 +149,24 @@ char **hsh_checkpath(char **toks)
  * Return: 1 if success, -1 if failure
  */
 
-int hsh_check_builtins(char **args)
+int hsh_check_builtins(data_t *data)
 {
-	if (args[0] == NULL)
+	if (data->toks[0] == NULL)
 		return (-1);
 
-	if (_strcmp(args[0], "cd") == 0)
-		return (hsh_cd(args));
-	if (_strcmp(args[0], "help") == 0)
-		return (hsh_help(args));
-	if (_strcmp(args[0], "exit") == 0)
-		return (hsh_exit(args));
-	if (_strcmp(args[0], "env") == 0)
-		return (hsh_env());
-	if (_strcmp(args[0], "setenv") == 0)
-		return (hsh_setenv(args));
+	if (_strcmp(data->toks[0], "cd") == 0)
+		return (hsh_cd(data));
+	if (_strcmp(data->toks[0], "help") == 0)
+		return (hsh_help(data));
+	if (_strcmp(data->toks[0], "exit") == 0)
+		return (hsh_exit(data));
+	if (_strcmp(data->toks[0], "env") == 0)
+		return (hsh_env(data));
+	if (_strcmp(data->toks[0], "setenv") == 0)
+		return (hsh_setenv(data));
 	/*
-	 * if (_strcmp(args[0], "unsetenv") == 0)
-	 * return (hsh_unsetenv(args));
+	 * if (_strcmp(data->toks[0], "unsetenv") == 0)
+	 * return (hsh_unsetenv(data));
 	 */
 	return (0);
 }

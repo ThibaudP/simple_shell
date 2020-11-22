@@ -37,11 +37,11 @@ typedef struct data_s
 
 /* BUILTINS */
 
-int hsh_cd(char **args);
-int hsh_help(char **args);
-int hsh_exit(char **args);
-int hsh_env(void);
-int hsh_setenv(char **args);
+int hsh_cd(data_t *data);
+int hsh_help(data_t *data);
+int hsh_exit(data_t *data);
+int hsh_env(data_t *data);
+int hsh_setenv(data_t *data);
 
 /* STRING UTILS */
 
@@ -64,7 +64,7 @@ void sig_ign(int sig_num);
 
 /* DATA UTILS */
 data_t *data_new(char **env);
-char **dupl_env(char **env);
+data_t *dupl_env(data_t *data, char **env);
 
 /* MATH UTILS */
 int _atoi(char *s);
@@ -74,14 +74,14 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 void free_star(char **args, int n);
 
 /* ENV UTILS */
-char *_getenv(const char *name);
+char *_getenv(data_t *data, char *name);
 
 /* MAIN FUNCTIONS */
 
 char *hsh_getline(void);
-char **hsh_tokens(char *line);
-int hsh_exec(char **toks);
-char **hsh_checkpath(char **toks);
-int hsh_check_builtins(char **args);
+data_t *hsh_tokens(data_t *data);
+int hsh_exec(data_t *data);
+data_t *hsh_checkpath(data_t *data);
+int hsh_check_builtins(data_t *data);
 
 #endif

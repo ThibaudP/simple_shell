@@ -10,7 +10,7 @@
 void free_star(char **args, int n)
 {
 
-	while (n <= 0)
+	while (n >= 0)
 		free(args[n--]);
 	free(args);
 }

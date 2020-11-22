@@ -8,23 +8,19 @@
  * Return: Value of requested key
  */
 
-char *_getenv(const char *name)
+char *_getenv(data_t *data, char *name)
 {
-	extern char **environ;
-	int i;
-	int j;
+	int i = 0, j = 0;
 
-	i = 0;
-	while (environ[i] != NULL)
+	while (data->env[i] != NULL)
 	{
-		j = 0;
-		while (environ[i][j] == name[j])
+		while (data->env[i][j] == name[j])
 		{
 			j++;
-			if (environ[i][j] == '=')
+			if (data->env[i][j] == '=')
 			{
 				j++;
-				return (&environ[i][j]);
+				return (&data->env[i][j]);
 			}
 		}
 		i++;

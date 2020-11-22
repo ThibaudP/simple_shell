@@ -12,9 +12,7 @@
 
 int main(int ac, char **av, char **env)
 {
-	char *line = NULL;
-	char **toks = NULL;
-	int status = 1, i = 0;
+	int status = 1;
 	data_t *data;
 	(void)av;
 	(void)env;
@@ -22,9 +20,6 @@ int main(int ac, char **av, char **env)
 	signal(SIGINT, sig_ign);
 
 	data = data_new(env);
-
-	while (i < 2)
-		puts(data->env[i++]);
 
 	if (ac > 1)
 	{
@@ -36,14 +31,14 @@ int main(int ac, char **av, char **env)
 		{
 			if (isatty(STDIN_FILENO))
 				_puts(PROMPT);
-			line = hsh_getline();
-			if (line[0] != '\n')
+			data->line = hsh_getline();
+			if (data->line[0] != '\n')
 			{
-				toks = hsh_tokens(line);
-				status = hsh_exec(toks);
-				free(toks);
+				data = hsh_tokens(data);
+				status = hsh_exec(data);
+				free(data->toks);
 			}
-			free(line);
+			free(data->line);
 		}
 	}
 
@@ -67,7 +62,7 @@ data_t *data_new(char **env)
 	new = malloc(sizeof(data_t));
 	if (new)
 	{
-		new->env = dupl_env(env);
+		dupl_env(new, env);
 	}
 
 	return (new);
@@ -81,22 +76,23 @@ data_t *data_new(char **env)
  * Return: an array of strings
  */
 
-char **dupl_env(char **env)
+data_t *dupl_env(data_t *data, char **env)
 {
 	int i = 0, j = 0;
-	char **new;
 
 	while (env[i])
 		i++;
-	new = malloc(sizeof(char *) * (i + 1));
-	
+	data->env = malloc(sizeof(char *) * (i + 1));
+	if (!data->env)
+		return (NULL);
+
 	while (env[j])
 	{
-		new[j] = _strdup(env[j]);
+		data->env[j] = _strdup(env[j]);
 		j++;
 	}
 
-	new[j] = NULL;
+	data->env[j] = NULL;
 
-	return (new);
+	return (data);
 }
