@@ -30,7 +30,7 @@ int hsh_setenv(data_t *data)
 	osizenv = sizeof(char *) * (i + 1);
 	nsizenv = sizeof(char *) * (i + 2);
 	data->env = _realloc(data->env, osizenv, nsizenv);
-	data->env[i] = malloc(sizeof(char) * (tok1siz + tok2siz));
+	data->env[i] = malloc(sizeof(char) * (tok1siz + tok2siz + 2));
 
 	for (j = 0; data->toks[1][j]; j++)
 		data->env[i][j] = data->toks[1][j];
@@ -57,33 +57,33 @@ int hsh_setenv(data_t *data)
 
 int hsh_unsetenv(data_t *data, char *name)
 {
-	int i, j;
-	int oldS;
-	int newS;
+	int i = 0, j = 0, oldS, newS;
 
 	if (!data->toks[1])
 	{
 		puts("No argument provided.");
 		return (0);
 	}
-	i = 0;
+
 	while (data->env[i])
 		i++;
-	j = 0;
+
 	while (_strncmp(data->env[j], name, _strlen(name)) != 0)
-	{
 		j++;
-	}
 	j++;
+
 	data->env[j] = NULL;
 	free(data->env[j]);
-	while (j <= i)
+
+	while (j < i)
 	{
 		data->env[j] = data->env[j + 1];
 		j++;
 	}
+
 	oldS = sizeof(char *) * (i + 2);
 	newS = sizeof(char *) * (i + 1);
 	data->env = _realloc(data->env, oldS, newS);
+
 	return (1);
 }
