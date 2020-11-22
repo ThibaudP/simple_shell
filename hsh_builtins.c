@@ -74,9 +74,9 @@ int hsh_cd(data_t *data)
 		perror("cd");
 
 	getcwd(cwd, 4096);
-	_setenv("OLDPWD", _getenv("PWD"));
+/*	_setenv("OLDPWD", _getenv("PWD"));
 	_setenv("PWD", cwd);
-	free(path);
+*/	free(path);
 	free(cwd);
 	
 	return (1);

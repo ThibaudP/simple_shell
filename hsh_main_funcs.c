@@ -28,7 +28,7 @@ data_t *hsh_getline(data_t *data)
 data_t *hsh_tokens(data_t *data)
 {
 	int i = 0, num_toks = 0;
-	char *delim = TOK_DELIM, *tmp;
+	char *delim = TOK_DELIM, *tmp = NULL;
 
 	num_toks = wordcnt(data->line, ' ');
 
@@ -39,8 +39,12 @@ data_t *hsh_tokens(data_t *data)
 	{
 		data->toks[i++] = tmp;
 		tmp = _strtok(NULL, delim);
+		if (tmp && tmp[0] == '#')
+			break;
 	}
+
 	data->toks[i] = NULL;
+
 	return (data);
 }
 
@@ -167,6 +171,7 @@ data_t *hsh_checkpath2(data_t *data, char **paths)
 			break;
 		}
 		free(tmp);
+	
 	}
 	return (data);
 }

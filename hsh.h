@@ -77,6 +77,8 @@ void free_star(char **args, int n);
 
 /* ENV UTILS */
 char *_getenv(data_t *data, char *name);
+int _setenv(data_t *data, char *name, char *value);
+int _unsetenv(data_t *data, char *name);
 
 /* ERR UTILS */
 
