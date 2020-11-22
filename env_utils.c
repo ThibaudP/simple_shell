@@ -97,11 +97,14 @@ int _unsetenv(data_t *data, char *name)
 	while (data->env[i])
 		i++;
 
-	while (_strncmp(data->env[j], name, _strlen(name)) != 0)
-		j++;
-	j++;
 
-	data->env[j] = NULL;
+	while (_strncmp(data->env[j], name, _strlen(name)) != 0)
+		j++;	if (j == i)
+		{
+			_puts("env variable not found\n");
+			return (1);
+		}
+
 	free(data->env[j]);
 
 	while (j < i)
