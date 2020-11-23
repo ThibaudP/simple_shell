@@ -79,7 +79,7 @@ int hsh_cd(data_t *data)
 	_setenv(data, "PWD", cwd);
 	free(path);
 	free(cwd);
-	
+
 	return (1);
 }
 
@@ -121,17 +121,36 @@ int hsh_exit(data_t *data)
 
 int hsh_help(data_t *data)
 {
-	int i;
-	char *builtin_str[] = {"cd", "help", "exit"};
-	(void)data;
+	int i = 0, len;
+	char *builtin_str[] = {"cd", "help", "exit", "env", "setenv", "unsetenv", NULL};
 
-	printf("Usage : program name + argument + enter\n");
-	printf("Here are builtins :\n");
-	i = 0;
-	while (i < 2)
+	len = _strlen(data->toks[1]);
+	if (_strncmp(data->toks[1], "cd", len) == 0)
+		_puts("Usage : cd [directory]\n");
+	else if (_strncmp(data->toks[1], "help", len) == 0)
+		_puts("Usage : help [builtin]\n");
+	else if (_strncmp(data->toks[1], "exit", len) == 0)
+		_puts("Usage : exit [argument]\n");
+	else if (_strncmp(data->toks[1], "env", len) == 0)
+		_puts("Usage : env\n");
+	else if (_strncmp(data->toks[1], "setenv", len) == 0)
+		_puts("Usage : setenv [name] [value]\n");
+	else if (_strncmp(data->toks[1], "unsetenv", len) == 0)
+		_puts("Usage : unsetenv [name]\n");
+	else
 	{
-		printf("%s\n", builtin_str[i]);
-		i++;
+		while (builtin_str[i] != NULL && _strncmp(data->toks[1], builtin_str[i], len) != 0)
+		{
+			_puts("Usage : help [");
+			_puts(builtin_str[i]);
+			_puts("]\n");
+			i++;
+		}
 	}
 	return (1);
 }
+
+
+
+
+
