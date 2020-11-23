@@ -75,7 +75,7 @@ char *_strtok(char *str, char *delim)
 		return (NULL);
 	}
 
-	end = str + strcspn(str, delim);
+	end = str + _strcspn(str, delim);
 	if (*end == '\0')
 	{
 		ptrtok = end;
@@ -99,24 +99,17 @@ char *_strtok(char *str, char *delim)
 
 unsigned int _strspn(char *s, char *accept)
 {
-	unsigned int i, n = 0, m = 0;
-	int j;
+	unsigned int i = 0;
 
-	for (i = 0; s[i]; i++)
+	while (s[i])
 	{
-		m = 0;
-		for (j = 0; accept[j]; j++)
-		{
-			if (s[i] == accept[j])
-			{
-				n++;
-				m++;
-			}
-		}
-		if (m == 0)
+		if (_strchr(accept, s[i]) != NULL)
+			i++;
+		else
 			break;
 	}
-	return (n);
+
+	return (i);
 }
 
 /**
@@ -130,22 +123,15 @@ unsigned int _strspn(char *s, char *accept)
 
 unsigned int _strcspn(char *s, char *reject)
 {
-	unsigned int i, n = 0, m = 0;
-	int j;
+	unsigned int i = 0;
 
-	for (i = 0; s[i]; i++)
+	while (s[i])
 	{
-		m = 0;
-		for (j = 0; reject[j]; j++)
-		{
-			if (s[i] != reject[j])
-			{
-				n++;
-				m++;
-			}
-		}
-		if (m == 0)
+		if (_strchr(reject, s[i]) == NULL)
+			i++;
+		else
 			break;
 	}
-	return (n);
+
+	return (i);
 }

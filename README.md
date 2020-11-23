@@ -21,7 +21,7 @@ Below is a list of the required tasks and their corresponding features.
 
 ### Advanced tasks
 
-- [ ] Task 8 - Contribute to a cohort-wide test suite for this project
+- [x] Task 8 - Contribute to a cohort-wide test suite for this project
 - [ ] Task 9 - Rewrite ``getline();`` (using a buffer & static variables)
 - [x] Task 10 - Rewrite ``strtok();``
 - [x] Task 11 - Handle arguments for ``exit``
@@ -32,7 +32,7 @@ Below is a list of the required tasks and their corresponding features.
 - [ ] Task 16 - Handle the ``&&`` and ``||`` shell logical separators
 - [ ] Task 17 - Implement the ``alias`` built-in
 - [ ] Task 18 - Handle variables replacement, ``$?`` and ``$$``
-- [ ] Task 19 - Handle comments (``#``)
+- [x] Task 19 - Handle comments (``#``)
 - [x] Task 20 - Handle the ``help`` built-in
 - [ ] Task 21 - Implement the history (without arguments)
 - [ ] Task 22 - The shell can take a file as input (e.g. ``simple_shell [filename])``

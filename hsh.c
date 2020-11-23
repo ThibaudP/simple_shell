@@ -62,7 +62,7 @@ data_t *data_new(char **env, char **argv)
 	{
 		dupl_env(new, env);
 		dupl_argv(new, argv);
-		new->cmd_cnt = 0;
+		new->cmd_cnt = 1;
 		new->line = NULL;
 		new->toks = NULL;
 	}

@@ -11,6 +11,8 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <signal.h>
+#include <fcntl.h>
+#include <limits.h>
 
 /* MACROS */
 #define TOK_DELIM " \n\t\r\a"
@@ -28,13 +30,14 @@
 
 typedef struct data_s
 {
-	char **toks;
 	char *line;
-	char **env;
 	char **argv;
+	char **env;
+
+	char **toks;
+
 	int cmd_cnt;
 } data_t;
-
 
 /* BUILTINS */
 
@@ -44,6 +47,7 @@ int hsh_exit(data_t *data);
 int hsh_env(data_t *data);
 int hsh_setenv(data_t *data);
 int hsh_unsetenv(data_t *data, char *name);
+int hsh_history(data_t *data);
 
 /* STRING UTILS */
 
@@ -86,7 +90,6 @@ int _unsetenv(data_t *data, char *name);
 /* ERR UTILS */
 void errcmp(data_t *data, char *compare);
 void hsh_err(data_t *data, char *msg); 
-
 
 /* MAIN FUNCTIONS */
 

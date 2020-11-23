@@ -107,7 +107,7 @@ int hsh_exec(data_t *data)
 
 data_t *hsh_checkpath(data_t *data)
 {
-	char *path, *origtok = data->toks[0];
+	char *path, *origtok = _strdup(data->toks[0]);
 	char **paths;
 	int i = 0, num_toks = 0, cmp1, cmp2;
 
@@ -123,7 +123,7 @@ data_t *hsh_checkpath(data_t *data)
 	{
 		path = _strdup(_getenv(data, "PATH"));
 		num_toks = wordcnt(path, ':');
-		paths = malloc(sizeof(char *) * (num_toks + 1));
+		paths = malloc(sizeof(char *) * (num_toks + 2));
 		if (!paths)
 		{
 			hsh_err(data, "couldn't allocate memory");
@@ -141,8 +141,9 @@ data_t *hsh_checkpath(data_t *data)
 		free(path);
 		free(paths);
 	}
-	if (_strcmp(data->toks[0], origtok) == 0)
+	if (_strncmp(data->toks[0], origtok, _strlen(origtok)) == 0)
 		hsh_err(data, "not found");
+	free(origtok);
 	return (data);
 }
 

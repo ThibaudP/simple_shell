@@ -49,7 +49,7 @@ char *_getenv(data_t *data, char *name)
 
 int _setenv(data_t *data, char *name, char *value)
 {
-	int i = 0, osizenv = 0, nsizenv = 0, sizenvi = 0;
+	int i = 0, osizenv = 0, nsizenv = 0;
 	int tok1siz = _strlen(name), tok2siz = _strlen(value);
 
 	if (name == NULL || value == NULL)
@@ -69,8 +69,7 @@ int _setenv(data_t *data, char *name, char *value)
 		data->env = _realloc(data->env, osizenv, nsizenv);
 		if (data->env)
 		{
-			sizenvi = tok1siz + tok2siz + 2;
-			data->env[i] = malloc(sizeof(char) * sizenvi);
+			data->env[i] = malloc(sizeof(char) * (tok1siz + tok2siz + 2));
 			if (data->env[i])
 			{
 				_strcpy(data->env[i], name);
@@ -116,13 +115,15 @@ int _unsetenv(data_t *data, char *name)
 	while (data->env[i])
 		i++;
 
-
 	while (_strncmp(data->env[j], name, _strlen(name)) != 0)
-		j++;	if (j == i)
+	{
+		j++;
+		if (j == i)
 		{
 			hsh_err(data, "_unsetenv: variable not found");
 			return (1);
 		}
+	}
 
 	free(data->env[j]);
 

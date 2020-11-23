@@ -107,10 +107,17 @@ int hsh_cd(data_t *data)
 int hsh_exit(data_t *data)
 {
 	int i = 0, j = 0, k = 0;
+	char errmsg[200];
 
 	if (data->toks[1])
 		i = _atoi(data->toks[1]);
-	free(data->toks);
+
+	if (i && (i < 0 || i > INT_MAX))
+	{
+		_strcat(errmsg, "Illegal number: ");
+		_strcat(errmsg, data->toks[1]);
+		hsh_err(data, errmsg);
+	}
 
 	while (data->env[j])
 		j++;
@@ -120,6 +127,7 @@ int hsh_exit(data_t *data)
 
 	free_star(data->argv, k);
 	free_star(data->env, j);
+	free(data->toks);
 	free(data->line);
 	free(data);
 
