@@ -171,7 +171,7 @@ data_t *hsh_checkpath2(data_t *data, char **paths)
 			break;
 		}
 		free(tmp);
-	
+
 	}
 	return (data);
 }

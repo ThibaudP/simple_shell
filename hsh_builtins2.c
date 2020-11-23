@@ -26,7 +26,7 @@ int hsh_setenv(data_t *data)
  * hsh_unsetenv - remove an env
  *
  * @data: name of the env to remove
- *
+ * @name: name of variable to unset
  *
  * Return: 1 if success, 0 if failure
  */

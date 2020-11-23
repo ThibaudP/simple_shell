@@ -77,6 +77,8 @@ int _setenv(data_t *data, char *name, char *value)
  *
  * @data: the data struct
  * @name: name of varible
+ *
+ * Return: Always 1
  */
 
 int _unsetenv(data_t *data, char *name)
