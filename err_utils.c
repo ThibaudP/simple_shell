@@ -1,26 +1,28 @@
 #include "hsh.h"
 
 /**
- * errcmp - compares toks[0] with value, error if match
+ * hsh_err - displays error messages
  *
  * @data: the data struct
- * @compare: the string to compare to
+ * @msg: error message to display
+ *
+ * Return: the data struct
  */
 
-void errcmp(data_t *data, char *compare)
+void hsh_err(data_t *data, char *msg)
 {
 	char errmsg[200];
-	int hist = 1;
+	char *cnt = _itoa(data->cmd_cnt);
 
-	if (_strcmp(data->toks[0], compare) == 0)
-	{
-		_strcpy(errmsg, "hsh: ");
-		_strcat(errmsg, _itoa(hist));
-		_strcat(errmsg, " ");
-		_strcat(errmsg, data->toks[0]);
-		_strcat(errmsg, ": not found");
+	_strcpy(errmsg, data->argv[0]);
+	_strcat(errmsg, ": ");
+	_strcat(errmsg, cnt);
+	_strcat(errmsg, ": ");
+	_strcat(errmsg, data->toks[0]);
+	_strcat(errmsg, ": ");
+	_strcat(errmsg, msg);
+	_strcat(errmsg, "\n");
 
-		_puts(errmsg);
-		_putchar('\n');
-	}
+	write(2, errmsg, _strlen(errmsg));
+	free(cnt);
 }

@@ -13,7 +13,7 @@ int hsh_setenv(data_t *data)
 
 	if (!data->toks[2])
 	{
-		puts("setenv takes 2 parameters!");
+		hsh_err(data, "not enough parameters (Usage: setenv [name] [value])");
 		return (1);
 	}
 
@@ -35,7 +35,7 @@ int hsh_unsetenv(data_t *data, char *name)
 {
 	if (!data->toks[1])
 	{
-		puts("No argument provided.");
+		hsh_err(data, "not enough parameters. (Usage: unsetenv [name])");
 		return (0);
 	}
 

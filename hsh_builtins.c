@@ -41,6 +41,13 @@ int hsh_env(data_t *data)
 	int i;
 
 	i = 0;
+
+	if (!data->env)
+	{
+		hsh_err(data, "couldn't find environment");
+		return (1);
+	}
+
 	while (data->env[i])
 	{
 		_puts(data->env[i]);
@@ -61,6 +68,7 @@ int hsh_env(data_t *data)
 int hsh_cd(data_t *data)
 {
 	char *path;
+	char errmsg[200] = "can't cd to ";
 	char *cwd = malloc(sizeof(char) * 4096);
 
 	if (!data->toks[1])
@@ -71,12 +79,17 @@ int hsh_cd(data_t *data)
 		path = _strdup(data->toks[1]);
 
 	if (chdir(path) == -1)
-		perror("cd");
-
-	getcwd(cwd, 4096);
-	puts(_getenv(data, "PWD"));
-	_setenv(data, "OLDPWD", _getenv(data, "PWD"));
-	_setenv(data, "PWD", cwd);
+	{
+		_strcat(errmsg, data->toks[1]);
+		hsh_err(data, errmsg);
+	}
+	else
+	{
+		getcwd(cwd, 4096);
+		puts(_getenv(data, "PWD"));
+		_setenv(data, "OLDPWD", _getenv(data, "PWD"));
+		_setenv(data, "PWD", cwd);
+	}
 	free(path);
 	free(cwd);
 
@@ -93,7 +106,7 @@ int hsh_cd(data_t *data)
 
 int hsh_exit(data_t *data)
 {
-	int i = 0, j = 0;
+	int i = 0, j = 0, k = 0;
 
 	if (data->toks[1])
 		i = _atoi(data->toks[1]);
@@ -102,6 +115,10 @@ int hsh_exit(data_t *data)
 	while (data->env[j])
 		j++;
 
+	while (data->argv[k])
+		k++;
+
+	free_star(data->argv, k);
 	free_star(data->env, j);
 	free(data->line);
 	free(data);
@@ -122,6 +139,7 @@ int hsh_exit(data_t *data)
 int hsh_help(data_t *data)
 {
 	int i = 0, len;
+	char errmsg[200];
 	char *builtin_str[] = {
 		"cd", "help", "exit", "env", "setenv", "unsetenv", NULL};
 
@@ -142,9 +160,9 @@ int hsh_help(data_t *data)
 			_puts("Usage : unsetenv [name]\n");
 		else
 		{
-			_puts("-hsh: help: no help topics match '");
-			_puts(data->toks[1]);
-			_puts("'.  Try `help help'.");
+			_strcat(errmsg, "no help topics match '");
+			_strcat(errmsg, data->toks[1]);
+			_strcat(errmsg, "'.  Try `help help'.");
 		}
 	}
 	else

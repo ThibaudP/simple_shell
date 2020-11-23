@@ -14,12 +14,10 @@ int main(int ac, char **av, char **env)
 {
 	int status = 1;
 	data_t *data;
-	(void)av;
-	(void)env;
 
 	signal(SIGINT, sig_ign);
 
-	data = data_new(env);
+	data = data_new(env, av);
 
 	if (ac > 1)
 	{
@@ -39,6 +37,7 @@ int main(int ac, char **av, char **env)
 				free(data->toks);
 			}
 			free(data->line);
+			data->cmd_cnt += 1;
 		}
 	}
 
@@ -49,11 +48,12 @@ int main(int ac, char **av, char **env)
  * data_new - Populates the data struct
  *
  * @env: environment array
+ * @argv: argv
  *
  * Return: a data_t struct
  */
 
-data_t *data_new(char **env)
+data_t *data_new(char **env, char **argv)
 {
 	data_t *new = NULL;
 
@@ -61,8 +61,13 @@ data_t *data_new(char **env)
 	if (new)
 	{
 		dupl_env(new, env);
+		dupl_argv(new, argv);
+		new->cmd_cnt = 0;
+		new->line = NULL;
+		new->toks = NULL;
 	}
-	new->line = NULL;
+	else
+		return (NULL);
 
 	return (new);
 }
@@ -93,6 +98,35 @@ data_t *dupl_env(data_t *data, char **env)
 	}
 
 	data->env[j] = NULL;
+
+	return (data);
+}
+
+/**
+ * dupl_argv - Duplicates the **argv
+ *
+ * @data: the data struct
+ * @argv: the argv
+ * Return: a duplicate of argv in data->argv
+ */
+
+data_t *dupl_argv(data_t *data, char **argv)
+{
+	int i = 0, j = 0;
+
+	while (argv[i])
+		i++;
+	data->argv = malloc(sizeof(char *) * (i + 1));
+	if (!data->argv)
+		return (NULL);
+
+	while (argv[j])
+	{
+		data->argv[j] = _strdup(argv[j]);
+		j++;
+	}
+
+	data->argv[j] = NULL;
 
 	return (data);
 }

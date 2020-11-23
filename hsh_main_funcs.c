@@ -34,16 +34,21 @@ data_t *hsh_tokens(data_t *data)
 
 	data->toks = malloc(sizeof(char *) * (num_toks + 1));
 
-	tmp = _strtok(data->line, delim);
-	while (tmp != NULL)
+	if (data->toks)
 	{
-		data->toks[i++] = tmp;
-		tmp = _strtok(NULL, delim);
-		if (tmp && tmp[0] == '#')
-			break;
-	}
+		tmp = _strtok(data->line, delim);
+		while (tmp != NULL)
+		{
+			data->toks[i++] = tmp;
+			tmp = _strtok(NULL, delim);
+			if (tmp && tmp[0] == '#')
+				break;
+		}
 
-	data->toks[i] = NULL;
+		data->toks[i] = NULL;
+	}
+	else
+		hsh_err(data, "couldn't allocate memory");
 
 	return (data);
 }
@@ -73,7 +78,7 @@ int hsh_exec(data_t *data)
 	child_pid = fork();
 	if (child_pid == -1)
 	{
-		perror("fork");
+		hsh_err(data, "unable to fork");
 		return (1);
 	}
 	if (child_pid == 0)
@@ -111,7 +116,7 @@ data_t *hsh_checkpath(data_t *data)
 	if (cmp1 == 0 || cmp2 == 0)
 	{
 		if (access(data->toks[0], X_OK) != 0)
-			errcmp(data, origtok);
+			hsh_err(data, "not found");
 		return (data);
 	}
 	else
@@ -121,7 +126,7 @@ data_t *hsh_checkpath(data_t *data)
 		paths = malloc(sizeof(char *) * (num_toks + 1));
 		if (!paths)
 		{
-			_puts("Couldn't allocate memory");
+			hsh_err(data, "couldn't allocate memory");
 			return (data);
 		}
 		while (i < (num_toks + 1))
@@ -136,7 +141,8 @@ data_t *hsh_checkpath(data_t *data)
 		free(path);
 		free(paths);
 	}
-	errcmp(data, origtok);
+	if (_strcmp(data->toks[0], origtok) == 0)
+		hsh_err(data, "not found");
 	return (data);
 }
 
@@ -161,7 +167,7 @@ data_t *hsh_checkpath2(data_t *data, char **paths)
 		_strcat(_strcat(_strcpy(tmp, paths[j++]), "/"), data->toks[0]);
 		if (!tmp)
 		{
-			_puts("Couldn't allocate memory");
+			hsh_err(data, "couldn't allocate memory");
 			return (data);
 		}
 		if (access(tmp, X_OK) == 0)

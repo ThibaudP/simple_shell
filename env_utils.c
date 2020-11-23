@@ -13,7 +13,14 @@ char *_getenv(data_t *data, char *name)
 {
 	int i = 0, j = 0;
 
-	while (data->env[i] != NULL)
+	if (!data->env)
+	{
+		hsh_err(data, "_getenv: failed to fetch environment");
+		return (NULL);
+	}
+
+
+	while (data->env[i])
 	{
 		while (data->env[i][j] == name[j])
 		{
@@ -26,6 +33,7 @@ char *_getenv(data_t *data, char *name)
 		}
 		i++;
 	}
+
 	return (NULL);
 }
 
@@ -41,34 +49,43 @@ char *_getenv(data_t *data, char *name)
 
 int _setenv(data_t *data, char *name, char *value)
 {
-	int i = 0, osizenv = 0, nsizenv = 0;
+	int i = 0, osizenv = 0, nsizenv = 0, sizenvi = 0;
 	int tok1siz = _strlen(name), tok2siz = _strlen(value);
 
 	if (name == NULL || value == NULL)
+		hsh_err(data, "_setenv: missing parameter");
+	else if (!data->env)
+		hsh_err(data, "_setenv: failed to fetch environment");
+	else
 	{
-		puts("setenv takes 2 parameters!");
-		return (1);
+		if (_getenv(data, name))
+			_unsetenv(data, name);
+
+		while (data->env[i] != NULL)
+			i++;
+
+		osizenv = sizeof(char *) * (i + 1);
+		nsizenv = sizeof(char *) * (i + 2);
+		data->env = _realloc(data->env, osizenv, nsizenv);
+		if (data->env)
+		{
+			sizenvi = tok1siz + tok2siz + 2;
+			data->env[i] = malloc(sizeof(char) * sizenvi);
+			if (data->env[i])
+			{
+				_strcpy(data->env[i], name);
+				_strcat(data->env[i], "=");
+				_strcat(data->env[i], value);
+
+				i++;
+				data->env[i] = NULL;
+			}
+			else
+				hsh_err(data, "_setenv: malloc failure");
+		}
+		else
+			hsh_err(data, "_setenv: _realloc failure");
 	}
-
-	if (_getenv(data, name))
-	{
-		_unsetenv(data, name);
-	}
-
-	while (data->env[i] != NULL)
-		i++;
-
-	osizenv = sizeof(char *) * (i + 1);
-	nsizenv = sizeof(char *) * (i + 2);
-	data->env = _realloc(data->env, osizenv, nsizenv);
-	data->env[i] = malloc(sizeof(char) * (tok1siz + tok2siz + 2));
-
-	_strcpy(data->env[i], name);
-	_strcat(data->env[i], "=");
-	_strcat(data->env[i], value);
-
-	i++;
-	data->env[i] = NULL;
 	return (1);
 }
 
@@ -87,7 +104,12 @@ int _unsetenv(data_t *data, char *name)
 
 	if (!name)
 	{
-		puts("No argument provided.");
+		hsh_err(data, "_unsetenv: missing pameters");
+		return (0);
+	}
+	else if (!data->env)
+	{
+		hsh_err(data, "_unsetenv: failed to fetch environment");
 		return (0);
 	}
 
@@ -98,7 +120,7 @@ int _unsetenv(data_t *data, char *name)
 	while (_strncmp(data->env[j], name, _strlen(name)) != 0)
 		j++;	if (j == i)
 		{
-			_puts("env variable not found\n");
+			hsh_err(data, "_unsetenv: variable not found");
 			return (1);
 		}
 

@@ -31,6 +31,8 @@ typedef struct data_s
 	char **toks;
 	char *line;
 	char **env;
+	char **argv;
+	int cmd_cnt;
 } data_t;
 
 
@@ -64,8 +66,9 @@ void rev_string(char *str);
 void sig_ign(int sig_num);
 
 /* DATA UTILS */
-data_t *data_new(char **env);
+data_t *data_new(char **env, char **argv);
 data_t *dupl_env(data_t *data, char **env);
+data_t *dupl_argv(data_t *data, char **argv);
 
 /* MATH UTILS */
 int _atoi(char *s);
@@ -81,8 +84,8 @@ int _setenv(data_t *data, char *name, char *value);
 int _unsetenv(data_t *data, char *name);
 
 /* ERR UTILS */
-
 void errcmp(data_t *data, char *compare);
+void hsh_err(data_t *data, char *msg); 
 
 
 /* MAIN FUNCTIONS */
