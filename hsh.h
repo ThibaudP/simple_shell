@@ -26,6 +26,8 @@
  * @toks: command tokens
  * @line: line returned from getline
  * @env: the environment array
+ * @argv: the argv array
+ * @cmd_cnt: number of commands typed since launch
  */
 
 typedef struct data_s
