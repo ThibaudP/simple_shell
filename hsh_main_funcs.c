@@ -117,6 +117,7 @@ data_t *hsh_checkpath(data_t *data)
 	{
 		if (access(data->toks[0], X_OK) != 0)
 			hsh_err(data, "not found");
+		free(origtok);
 		return (data);
 	}
 	else
@@ -127,6 +128,8 @@ data_t *hsh_checkpath(data_t *data)
 		if (!paths)
 		{
 			hsh_err(data, "couldn't allocate memory");
+			free(origtok);
+			free(path);
 			return (data);
 		}
 		while (i < (num_toks + 1))
@@ -137,13 +140,11 @@ data_t *hsh_checkpath(data_t *data)
 				paths[i++] = _strtok(NULL, ":");
 		}
 		hsh_checkpath2(data, paths);
-
 		free(path);
 		free(paths);
 	}
 	if (_strncmp(data->toks[0], origtok, _strlen(origtok)) == 0)
 		hsh_err(data, "not found");
-	free(origtok);
 	return (data);
 }
 
