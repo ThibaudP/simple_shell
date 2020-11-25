@@ -89,7 +89,7 @@ int _unsetenv(data_t *data, char *name);
 
 /* ERR UTILS */
 void errcmp(data_t *data, char *compare);
-void hsh_err(data_t *data, char *msg); 
+void hsh_err(data_t *data, char *msg);
 
 /* MAIN FUNCTIONS */
 
