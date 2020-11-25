@@ -86,7 +86,7 @@ int hsh_cd(data_t *data)
 	else
 	{
 		getcwd(cwd, 4096);
-		puts(_getenv(data, "PWD"));
+		_puts(_getenv(data, "PWD"));
 		_setenv(data, "OLDPWD", _getenv(data, "PWD"));
 		_setenv(data, "PWD", cwd);
 	}
