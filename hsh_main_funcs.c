@@ -145,6 +145,7 @@ data_t *hsh_checkpath(data_t *data)
 	}
 	if (_strncmp(data->toks[0], origtok, _strlen(origtok)) == 0)
 		hsh_err(data, "not found");
+	free(origtok);
 	return (data);
 }
 
