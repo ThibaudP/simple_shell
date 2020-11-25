@@ -11,9 +11,22 @@
 data_t *hsh_getline(data_t *data)
 {
 	size_t buf = 0;
+	int j = 0, k = 0;
 
 	if ((getline(&(data->line), &buf, stdin)) == EOF)
+	{
+		while (data->env[j])
+			j++;
+
+		while (data->argv[k])
+			k++;
+
+		free_star(data->argv, k);
+		free_star(data->env, j);
+		free(data->line);
+		free(data);
 		exit(0);
+	}
 	return (data);
 }
 
