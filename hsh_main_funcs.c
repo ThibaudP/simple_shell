@@ -96,7 +96,7 @@ int hsh_exec(data_t *data)
 	}
 	if (child_pid == 0)
 	{
-		status = execve(data->toks[0], data->toks, NULL);
+		status = execve(data->toks[0], data->toks, data->env);
 		_exit(status);
 	}
 	else
