@@ -105,11 +105,25 @@ int hsh_cd(data_t *data)
 
 int hsh_exit(data_t *data)
 {
-	int i = 0, j = 0, k = 0;
+	int i = 0, j = 0, k = 0, l = 0;
 	char errmsg[200];
 
 	if (data->toks[1])
 		i = _atoi(data->toks[1]);
+
+	while (data->toks[1][l])
+	{
+		if (data->toks[1][l] < '0' || data->toks[1][l] > '9')
+		{
+			_strcat(errmsg, "Illegal number: ");
+			_strcat(errmsg, data->toks[1]);
+			hsh_err(data, errmsg);
+			return (2);
+		}
+		l++;
+	}
+
+
 
 	if (i && (i < 0 || i > INT_MAX))
 	{
