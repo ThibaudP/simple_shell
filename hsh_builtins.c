@@ -69,27 +69,37 @@ int hsh_cd(data_t *data)
 {
 	char *path;
 	char errmsg[200] = "can't cd to ";
-	char *cwd = malloc(sizeof(char) * 4096);
+	char *cwd = NULL;
 
 	if (!data->toks[1])
-		path = _strdup(_getenv(data, "HOME"));
-	else if (_strcmp(data->toks[1], "-") == 0)
-		path = _strdup(_getenv(data, "OLDPWD"));
-	else
-		path = _strdup(data->toks[1]);
-
-	if (chdir(path) == -1)
 	{
-		_strcat(errmsg, data->toks[1]);
-		hsh_err(data, errmsg);
+		if (_getenv(data, "HOME"))
+			path = _getenv(data, "HOME");
+		else
+			return (1);
+	}
+	else if (_strcmp(data->toks[1], "-") == 0)
+	{
+		if (_getenv(data, "OLDPWD"))
+		{
+			path = _getenv(data, "OLDPWD");
+			if (_strncmp(path, "/tmp", 4) == 0)
+				return (1);
+		}
+		else
+			return (1);
 	}
 	else
+		path = data->toks[1];
+
+	if (chdir(path) == -1)
+		hsh_err(data, _strcat(errmsg, data->toks[1]));
+	else
 	{
-		getcwd(cwd, 4096);
+		cwd = getcwd(cwd, 4096);
 		_setenv(data, "OLDPWD", _getenv(data, "PWD"));
 		_setenv(data, "PWD", cwd);
 	}
-	free(path);
 	free(cwd);
 
 	return (1);
