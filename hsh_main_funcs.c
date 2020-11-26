@@ -122,11 +122,12 @@ data_t *hsh_checkpath(data_t *data)
 {
 	char *path, *origtok = _strdup(data->toks[0]);
 	char **paths;
-	int i = 0, num_toks = 0, cmp1, cmp2;
+	int i = 0, num_toks = 0, cmp1, cmp2, cmp3;
 
 	cmp1 = _strncmp(data->toks[0], "/", 1);
 	cmp2 = _strncmp(data->toks[0], "./", 2);
-	if (cmp1 == 0 || cmp2 == 0)
+	cmp3 = _strncmp(data->toks[0], "../", 3);
+	if (cmp1 == 0 || cmp2 == 0 || cmp3 == 0)
 	{
 		if (access(data->toks[0], X_OK) != 0)
 			hsh_err(data, "not found");
