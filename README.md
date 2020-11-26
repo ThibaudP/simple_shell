@@ -1,8 +1,80 @@
-# simple_shell
+# simple_shell project
 
 This projects aims to create a simple shell, from scratch, with as much features as possible.
 
-The shell is a command that reads lines from either a file or the terminal, interprets them, and generally executes other commands.
+The shell is a program that reads lines from the standard input (either from a file piped into it or from user typed terminal commands), interprets them, and generally executes other commands.
+Simple_shell can be used in two different ways, either interactive or non-interactive. Interactive mode launches the shell in a terminal, displays a prompt, and waits for the user to enter the desired commands. Non-interactive mode lets the user pipe a script file (that includes one command per line) through to the shell executable (see examples below).
+
+## How to use it
+
+1. Clone this repository
+
+```bash
+ $ git clone https://github.com/ThibaudP/simple_shell.git
+```
+
+2. Compile all files to get executable file
+
+```bash
+ $ gcc *.c -o hsh
+```
+
+3. Execute
+
+```bash
+ $ ./hsh
+```
+
+## Examples
+
+### Interactive mode
+
+Interactive mode lets the user input commands through the terminal.
+To exit simple_shell, either press ```CTRL + D``` or use the ```$ exit``` built-in command.
+
+After installation, execute the command below to launch simple_shell
+
+```bash
+ $ ./hsh
+```
+
+The single ``$ `` prompt will be displayed.
+```bash
+ $:
+```
+
+```bash
+ $ ./hsh
+ $: echo "hello world"
+ hello world
+ $:
+```
+
+### Non-interactive mode
+
+Non-interactive mode lets you redirect any line (either echo'ed or printed from a file) to the standard input of simple_shell, execute those commands (line by line in case of multiple commands), then exit the shell.
+
+```bash
+ $ echo "the command you want to run" | ./hsh
+```
+
+```bash
+ $ echo "pwd" | ./hsh
+/home/foo/bar
+```
+
+
+```bash
+ $ echo "pwd" | ./hsh
+/home/foo/bar
+ $ cat testfile
+ cd /tmp
+ touch toto
+ ls -l
+ $ cat testfile | ./hsh
+ total 0
+ -rw-rw-r-- 1 vagrant vagrant 0 Nov 25 13:35 toto
+```
 
 ## Task list
 
