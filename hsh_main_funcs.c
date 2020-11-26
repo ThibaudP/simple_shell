@@ -141,12 +141,11 @@ data_t *hsh_checkpath(data_t *data)
 		paths = malloc(sizeof(char *) * (num_toks + 2));
 		if (!paths)
 		{
-			hsh_err(data, "couldn't allocate memory");
 			free(origtok);
 			free(path);
 			return (data);
 		}
-		while (i < (num_toks + 1))
+		while (i <= num_toks)
 		{
 			if (i == 0)
 				paths[i++] = _strtok(path, ":");
