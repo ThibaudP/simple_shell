@@ -11,9 +11,6 @@ Holberton  project. Coding the (almost) same shell as the original sh (BOURNE SH
 .SS Overview
 .B
 The shell is a command that reads lines from either a file (non-interactive mode) or the terminal (interactive mode), interprets them, and generally executes other commands.
-.SS Aliases
-.B
-An alias is a name and corresponding value set using the alias(1) builtin command. The shell checks the word to see if it matches an alias. If it does, it replaces it in the input stream with its value.
 .SS Path Search
 .B
 When locating a command, the shell first looks to see if it has a shell function by that name. Then it looks for a builtin command by that name.  If a builtin command is not found, one of two things happen:
@@ -28,16 +25,12 @@ The shell searches each entry in PATH in turn for the command. The value of the 
 .SS Builtins
 .B
 This section lists the builtin commands which are builtin because they need to perform some operation that can't be performed by a separate process.
-.TP
 .B
-alias [\fIname\fP[\fI=string ...\fP]]
-.B
-If \fIname=string\fP is specified, the shell defines the alias \fIname\fP with value \fIstring\fP. If just \fIname\fP is specified, the value of the alias \fIname\fP is printed. With no arguments, the alias builtin prints the names and values of all defined aliases.
 .TP
 .B
 cd [\fIdirectory\fP]
 .B
-BlablaSwitch to the specified directory (default HOME).  If an entry for CDPATH appears in the environment of the cd command or the shell variable CDPATH is set and the directory name does not begin with a slash, then the directories listed in CDPATH will be searched for the specified directory. The format of CDPATH is the same as that of PATH. If a single dash is specified as the argument, it will be replaced by the value of OLDPWD. The cd command will print out the name of the directory that it actually switched to if this is different from the name that the user gave. These may be different either because the CDPATH mechanism was used or because the argument is a single dash.
+Switch to the specified directory (default HOME).  If an entry for CDPATH appears in the environment of the cd command or the shell variable CDPATH is set and the directory name does not begin with a slash, then the directories listed in CDPATH will be searched for the specified directory. The format of CDPATH is the same as that of PATH. If a single dash is specified as the argument, it will be replaced by the value of OLDPWD. The cd command will print out the name of the directory that it actually switched to if this is different from the name that the user gave. These may be different either because the CDPATH mechanism was used or because the argument is a single dash.
 .TP
 .B
 exit [\fIexitstatus\fP]
@@ -88,3 +81,49 @@ sh(1)
 .SH BUGS
 .B
 No bug found.
+.SH EXAMPLES
+.TP
+.B
+1. PWD
+.SS
+old_prompt$ ./hsh
+.SS
+$ _
+.SS
+$ pwd
+.SS
+$ print/the/current/working/directory 
+.TP
+.B
+2. EXIT
+.SS
+old_prompt$ ./hsh
+.SS
+$ _
+.SS
+$ exit
+.SS
+old_prompt$ _
+.TP
+.B
+3. SETENV
+.SS
+old_prompt$ ./hsh
+.SS
+$ _
+.SS
+$ setenv hello world
+.SS
+$ env
+.SS
+env1=...
+.SS
+env2=...
+.SS
+...
+.SS
+envX=...
+.SS
+hello=world
+.SS
+$ _
