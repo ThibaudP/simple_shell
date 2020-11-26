@@ -87,21 +87,25 @@ int hsh_cd(data_t *data)
 			_putchar('\n');
 		}
 		else
+		{
+			cwd = getcwd(cwd, 0);
+			_puts(cwd);
+			_putchar('\n');
+			free(cwd);
 			return (1);
+		}
 	}
 	else
 		path = data->toks[1];
-
 	if (chdir(path) == -1)
 		hsh_err(data, _strcat(errmsg, data->toks[1]));
 	else
 	{
-		cwd = getcwd(cwd, 4096);
+		cwd = getcwd(cwd, 0);
 		_setenv(data, "OLDPWD", _getenv(data, "PWD"));
 		_setenv(data, "PWD", cwd);
 	}
 	free(cwd);
-
 	return (1);
 }
 
