@@ -45,9 +45,9 @@ The single ``$ `` prompt will be displayed.
 
 ```bash
  $ ./hsh
- $: echo "hello world"
+ $ echo "hello world"
  hello world
- $:
+ $ 
 ```
 
 ### Non-interactive mode
