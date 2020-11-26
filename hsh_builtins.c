@@ -83,8 +83,8 @@ int hsh_cd(data_t *data)
 		if (_getenv(data, "OLDPWD"))
 		{
 			path = _getenv(data, "OLDPWD");
-			if (_strncmp(path, "/tmp", 4) == 0)
-				return (1);
+			_puts(path);
+			_putchar('\n');
 		}
 		else
 			return (1);
