@@ -52,10 +52,10 @@ data_t *hsh_tokens(data_t *data)
 		tmp = _strtok(data->line, delim);
 		while (tmp != NULL)
 		{
-			data->toks[i++] = tmp;
-			tmp = _strtok(NULL, delim);
 			if (tmp && tmp[0] == '#')
 				break;
+			data->toks[i++] = tmp;
+			tmp = _strtok(NULL, delim);
 		}
 
 		data->toks[i] = NULL;
