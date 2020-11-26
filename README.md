@@ -38,11 +38,12 @@ After installation, execute the command below to launch simple_shell
  $ ./hsh
 ```
 
-The single ``$ `` prompt will be displayed.
+The single ``$ `` prompt will be displayed, indicating that simple_shell is running
 ```bash
- $:
+ $ 
 ```
 
+A command can then be typed into the shell, to be executed after the user presses Enter
 ```bash
  $ ./hsh
  $ echo "hello world"
